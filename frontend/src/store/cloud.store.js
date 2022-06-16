@@ -1,0 +1,82 @@
+import { getElements, createDirectory, createFile } from '@/services/cloud.service';
+import { loadingStatuses } from "@/store/statusesLoadingConst"
+
+const mutations = {
+    GET_ELEMENTS(state, data) {
+        //state.rootUid = data.rootUid;
+        state.elements = data;
+    },
+    SET_ITEMS(state, data){
+        alert(data)
+        state.elements.push(data);
+    },
+    ELEMENTS_ERROR(state, error) {
+        state.error = error;
+    },
+}
+
+const actions = {
+    async getElements( { commit }, uid) {
+        commit("UPDATE_STATUS", loadingStatuses.Loading);
+        const data = await getElements(uid);
+        if(data){
+            commit("GET_ELEMENTS", data);
+            commit("UPDATE_STATUS", loadingStatuses.Ready);
+        }else{
+            commit("UPDATE_STATUS", loadingStatuses.Error);
+            commit("ELEMENTS_ERROR", "Нет данных");
+        }
+    },
+    async createDirectory( { commit }, form){
+        const { data, error } = await createDirectory(form)
+        if(data){
+            commit("SET_ITEMS", data);
+        }
+        if(error){
+            commit("ELEMENTS_ERROR", error);
+        }
+    },
+    async createFile( { commit }, form){
+        const { data, error } = await createFile(form)
+        if(data){
+            commit("SET_ITEMS", data);
+        }
+        if(error){
+            commit("ELEMENTS_ERROR", error);
+        }
+    }
+}
+
+const getters = {
+    elements: (state) => state.elements,
+    errorElement: (state) => state.error,
+    rootUid: (state) => state.rootuid || localStorage.getItem('uid'),
+}
+
+const state = () => ({
+    error: "",
+    elements: [{uid: "", rootUid: "", name: "", size: "", type: "", isFavorite: false, date: "", link: false}],
+    rootuid: "",
+})
+
+export default {
+    mutations,
+    getters,
+    actions,
+    state,
+}
+
+
+
+/*
+    Вход
+
+    1) получить id пользовтаеля
+    2) установить id текущей диреткории оно равно id пользовтаеля
+    
+
+    Зашел первый раз
+    1) Получить root
+
+
+*/

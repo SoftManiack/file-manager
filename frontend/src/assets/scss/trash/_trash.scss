@@ -1,0 +1,15 @@
+.l-trash{
+    margin: 0;
+    padding: 0;
+    min-width: 1000px;
+    &_header{
+        margin: 0 !important;
+        border-bottom: 1px solid #e5e5e5;
+        min-height: 8vh;
+    }
+    .c-header{
+        h6{
+            color: #6c757d;
+        }
+    }
+}

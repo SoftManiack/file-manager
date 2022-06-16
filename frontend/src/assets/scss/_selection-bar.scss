@@ -1,0 +1,15 @@
+.selection-bar{
+    border-left: 3px solid #fff;
+    background-color: #eeeeee;
+    width: 100%;
+    height: 65px;
+    &_btn{
+        border: none;
+        margin-left: 3px;
+    }
+    &_btn:hover{
+        transition: 0.5s all;
+        background-color: #e2e2e2;
+    }
+    
+}

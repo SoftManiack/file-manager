@@ -1,0 +1,11 @@
+@font-face{
+    font-family: "IstokWeb";
+    src: url('./assets//fonts/IstokWeb-Regular.ttf') format('truetype')
+}
+
+@import "variables";
+// Import styles
+@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap-vue/dist/bootstrap-vue.css';
+
+@import "custom";

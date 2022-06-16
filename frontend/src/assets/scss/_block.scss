@@ -1,0 +1,57 @@
+.c-block{
+    margin: 0.8rem;
+    border: 1px solid rgb(238, 238, 238);
+    border-radius: 13px;
+    background-color: #fafafa;
+    cursor: pointer;
+    width: 194px;
+    height: 190px;
+    position: relative;
+    &_favorites{
+        height: 15px;
+    }
+    &_name{
+        width: 100%;
+        text-align: center;
+    }
+    &_menu{
+        border-radius: 50%;
+        background: #f1f1f1;
+        display: none;
+        position: absolute;
+        width: 26px;
+        height: 25px;
+        right: 4px;
+        svg{
+            margin-top: 0px;
+            margin-left: 4.5px;
+        }
+    }
+}
+.c-block:hover {
+    .c-block_menu{
+        transition: 0.5s all;
+        display: block;
+    }
+}
+.c-block:hover{
+    transition: 0.3s all;
+    -webkit-box-shadow: 0px 0px 0px 3px rgba(238, 238, 238, 1);
+    -moz-box-shadow: 0px 0px 0px 3px rgba(238, 238, 238, 1);
+    box-shadow: 0px 0px 0px 3px rgba(238, 238, 238, 1);
+}
+.c-block--select{
+    transition: 0.3s all;
+    -webkit-box-shadow: 0px 0px 0px 3px rgba(43, 166, 222, 1);
+    -moz-box-shadow: 0px 0px 0px 3px rgba(43, 166, 222, 1);
+    box-shadow: 0px 0px 0px 3px rgba(43, 166, 222, 1);
+}
+.c-block--select:hover{
+    transition: 0.3s all;
+    -webkit-box-shadow: 0px 0px 0px 3px rgba(43, 166, 222, 1);
+    -moz-box-shadow: 0px 0px 0px 3px rgba(43, 166, 222, 1);
+    box-shadow: 0px 0px 0px 3px rgba(43, 166, 222, 1);
+}
+.c-block_menu--select{
+    display: block;
+}

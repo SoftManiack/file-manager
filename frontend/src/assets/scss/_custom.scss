@@ -1,0 +1,160 @@
+@import "layouts";
+
+@import "navbar";
+@import "header";
+@import "main";
+@import "block";
+@import "auth";
+@import "selection-bar";
+
+@import "recent/recent";
+
+@import "trash/trash";
+
+
+body{
+    font-style: normal;
+    padding: 0;
+    margin: 0;
+    font-family: 'IstokWeb';
+    overflow-y: hidden;
+    overflow-x: hidden;
+    moz-user-select: none;
+    -khtml-user-select: none; 
+    user-select: none;
+}
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+    opacity: 0;
+}
+.wide-popover { 
+    max-width: 400px; 
+}
+.app{   
+    width: 100%;
+}
+.b-popover{
+    max-width: 400px;
+    box-shadow: 0px 0px 3px 5px rgba(243, 243, 243, 0.6);
+    border: 1px solid rgb(226, 226, 226, 0.5);
+    border-radius: 11px;
+}
+.header-popover{
+    width: 250px;
+    height: 24vh;
+    &_user{
+        height: 10vh;
+        border-bottom: 1px solid #eeeeee;
+    }
+    &_avatar{
+        background-color: #ffc400;
+        border-radius: 5px;
+        width: 54px;
+        height: 54px;
+        h5{
+            color: #ffffff;
+            padding: 24%;
+            text-align: center;
+        }
+    }
+    a{
+        border: none;
+        text-decoration: none;
+    }
+}
+.main-popover{
+    height: 15vh;
+    padding: 5px;
+    width: 350px;
+    input{
+        width: 90%;
+        font-size: 14px;
+        border: 1px solid #eeeeee;
+        background-color: #fafafa;
+        margin: auto;
+        height: 37px;
+    }
+    input::before{
+        content: url('./assets/icons/right-arrow.svg');
+    }
+    &_btnCancel{
+        border: 2px solid #dfdfdf;
+        background-color: #f6f6f6;
+        color: #333339;
+    }
+    &_btnCreate{
+        border: 2px solid #2fbf95;
+        background-color: #24b987;
+        color: #ffffff;
+    }
+}
+.list-group{
+    margin: 10px;
+    width: 100%;
+    button{
+        border: none;
+    }
+}
+.breadcrumb{
+    background-color: #ffffff;
+    color: #6c757d;
+    margin: 0 !important;
+    margin-left: -30px !important;
+    .breadcrumb-item + .breadcrumb-item::before{
+        content: url('./assets/icons/right-arrow.svg');
+    }
+    .breadcrumb-item {
+        a{
+            color: #6c757d;
+            text-decoration: none;
+            border: none;
+        }
+    }
+}
+.b-table{
+    border-top: none;
+    margin: 2px;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 0.8rem;
+    color: #494949;
+    border-collapse: separate;
+    
+    thead:hover{
+        background-color: none !important;
+    }
+    th{
+        border: none !important;
+        padding-left: 18px;
+    }
+    thead th{
+        border: none !important;
+    }
+    tbody{
+        border: none !important;
+    }
+    thead > tr {
+        border: none !important;
+    }
+    tr{
+        border-top: 1px solid silver !important;
+    }
+    tr:hover{
+        background-color: #fafafa;
+    }
+    td{
+        padding: 0.4rem;
+        padding-left: 18px;
+    }
+
+}
+.modal-content{      
+    border: none;
+    box-shadow: 0px 0px 8px 0px rgba(106, 106, 106, 0.8);
+    border-radius: 1.5rem !important;
+    .modal-body{
+        padding-top: 0;
+    }
+}
