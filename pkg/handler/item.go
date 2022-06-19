@@ -4,7 +4,6 @@ import (
 	item "file-manager"
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,7 +11,7 @@ import (
 func (h *Handler) GetItems(c *gin.Context) {
 
 	rootuid := c.Param("uid")
-	time.Sleep(8 * time.Second)
+	//time.Sleep(3 * time.Second)
 
 	if rootuid == "" {
 		newErrorResponse(c, http.StatusBadRequest, "invalid param")
@@ -21,10 +20,9 @@ func (h *Handler) GetItems(c *gin.Context) {
 
 	items, err := h.services.GetItems(rootuid)
 
-	fmt.Println(len(items))
-	if len(items) == 1 {
+	/*if len(items) == 1 {
 		items = []item.Item{}
-	}
+	}*/
 
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -120,4 +118,27 @@ func (h *Handler) Delete(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, statusResponse{"ok"})
+}
+
+func (h *Handler) Upload(c *gin.Context) {
+
+	// Получить заголовок файла
+	file, err := c.FormFile("upload")
+	if err != nil {
+		c.String(http.StatusBadRequest, "Запрос не выполнен»")
+		return
+	}
+	// Получить имя файла
+	fileName := file.Filename
+	fmt.Println("Имя файла:", fileName)
+
+	path := fmt.Sprintf("C:/Програмирование/Проекты/file-manager/cloud/%s", fileName)
+	// Сохранить файл локально на сервере
+	// SaveUploadedFile (заголовок файла, путь сохранения)
+	if err := c.SaveUploadedFile(file, path); err != nil {
+		c.String(http.StatusBadRequest, "Ошибка сохранения:%s", err.Error())
+		return
+	}
+	c.String(http.StatusOK, "Успешно загруженный файл")
+
 }

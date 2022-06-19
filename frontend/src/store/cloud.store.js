@@ -7,7 +7,6 @@ const mutations = {
         state.elements = data;
     },
     SET_ITEMS(state, data){
-        alert(data)
         state.elements.push(data);
     },
     ELEMENTS_ERROR(state, error) {
@@ -20,8 +19,8 @@ const actions = {
         commit("UPDATE_STATUS", loadingStatuses.Loading);
         const data = await getElements(uid);
         if(data){
-            commit("GET_ELEMENTS", data);
             commit("UPDATE_STATUS", loadingStatuses.Ready);
+            commit("GET_ELEMENTS", data);
         }else{
             commit("UPDATE_STATUS", loadingStatuses.Error);
             commit("ELEMENTS_ERROR", "Нет данных");

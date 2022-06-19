@@ -8,12 +8,14 @@ const (
 type Item struct {
 	Uid         string `json:"uid" db:"uid"`
 	RootUid     string `json:"rootUid" db:"root_uid"`
+	Date        string `json:"date" db:"date"`
+	Extension   string `json:"extension" db:"extension"`
 	Name        string `json:"name" db:"name"`
-	Size        string `json:"size" db:"size"`
 	Type        string `json:"type" db:"type"`
 	IsFavorites bool   `json:"isFavorite" db:"is_favorites"`
-	Date        string `json:"date" db:"date"`
 	Link        bool   `json:"link" db:"link"`
+	Size        string `json:"size" db:"size"`
+	Trash       bool   `json:"trash" db:"trash"`
 }
 
 type NewDirectory struct {

@@ -2,6 +2,7 @@ import { instance } from '@/services/instances.service';
 
 export const getElements = async ( uid ) => {
     try {
+        alert("getElements ")
         const response = await instance.get(`/fm/items/${uid}`);
         return response.data;
     } catch (error) {

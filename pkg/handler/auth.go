@@ -2,6 +2,7 @@ package handler
 
 import (
 	user "file-manager"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,6 +16,7 @@ type signInInput struct {
 func (h *Handler) SignUp(c *gin.Context) {
 	var input user.User
 
+	fmt.Println(input.Name)
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return

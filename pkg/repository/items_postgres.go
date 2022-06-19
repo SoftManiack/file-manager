@@ -34,7 +34,7 @@ func (r *ItemsPostgres) CreateDirectory(input item.NewDirectory) (item.Item, err
 
 	queryGetUid := fmt.Sprintf("SELECT uid FROM %s WHERE name = $1 AND root_uid = $2 AND type = $3", itemsTable)
 	fmt.Println(queryGetUid)
-	queryCreateDirectory := fmt.Sprintf("INSERT INTO %s ( root_uid, name, type, is_favorites, link ) values ($1, $2, $3, $4, $5) RETURNING uid", itemsTable)
+	queryCreateDirectory := fmt.Sprintf("INSERT INTO %s ( root_uid, name, type, is_favorites, link, extension) values ($1, $2, $3, $4, $5, $6) RETURNING uid", itemsTable)
 	queryGetDirectory := fmt.Sprintf("SELECT * FROM %s WHERE uid = $1", itemsTable)
 
 	err := r.db.Get(&uid, queryGetUid, input.Name, input.RootUid, item.DIR)
@@ -44,7 +44,7 @@ func (r *ItemsPostgres) CreateDirectory(input item.NewDirectory) (item.Item, err
 	}
 
 	if err == sql.ErrNoRows {
-		row := r.db.QueryRow(queryCreateDirectory, input.RootUid, input.Name, item.DIR, false, false)
+		row := r.db.QueryRow(queryCreateDirectory, input.RootUid, input.Name, item.DIR, false, false, "dir")
 		if err := row.Scan(&uid); err != nil {
 			return newItem, err
 		}
@@ -65,7 +65,7 @@ func (r *ItemsPostgres) CreateTextFile(input item.NewFile) (item.Item, error) {
 	var uid string = ""
 
 	queryGetUid := fmt.Sprintf("SELECT uid FROM %s WHERE name = $1 AND root_uid = $2 AND type = $3", itemsTable)
-	queryCreateFile := fmt.Sprintf("INSERT INTO %s ( root_uid, name, type, is_favorites, link ) values ($1, $2, $3, $4, $5) RETURNING uid", itemsTable)
+	queryCreateFile := fmt.Sprintf("INSERT INTO %s ( root_uid, name, type, is_favorites, link, extension ) values ($1, $2, $3, $4, $5, $6) RETURNING uid", itemsTable)
 	queryGetFile := fmt.Sprintf("SELECT * FROM %s WHERE uid = $1", itemsTable)
 
 	err := r.db.Get(&uid, queryGetUid, input.Name, input.RootUid, item.FILE)
@@ -76,7 +76,7 @@ func (r *ItemsPostgres) CreateTextFile(input item.NewFile) (item.Item, error) {
 
 	if err == sql.ErrNoRows {
 		fmt.Println("ok")
-		row := r.db.QueryRow(queryCreateFile, input.RootUid, input.Name, item.FILE, false, false)
+		row := r.db.QueryRow(queryCreateFile, input.RootUid, input.Name, item.FILE, false, false, ".txt")
 		if err := row.Scan(&uid); err != nil {
 			return newItem, err
 		}

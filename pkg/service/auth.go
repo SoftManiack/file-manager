@@ -35,6 +35,7 @@ type tokenClaims struct {
 func (s *AuthService) CreateUser(user user.User) (string, error) {
 	user.Password = generatePasswordHash(user.Password)
 
+	fmt.Println(user.Name)
 	uid, err := s.repo.CreateUser(user)
 
 	if err == nil {

@@ -8,7 +8,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     getters: {
-        loadingStatus: (state) => state.loadingStatus,
+        getLoadingStatus: (state) => state.loadingStatus,
     },
     state: () => ({
         loadingStatus: loadingStatuses.Empty,

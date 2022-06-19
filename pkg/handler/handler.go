@@ -43,6 +43,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			items.POST("/file", h.CreateTextFile)
 			items.PUT("/:uid", h.Rename)
 			items.DELETE("/:uid", h.Delete)
+			items.POST("/upload", h.Upload)
 		}
 
 		/*recent := router.Group("/recent")

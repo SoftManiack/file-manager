@@ -18,12 +18,15 @@ const mutations = {
 const actions = {
     async signUp( { commit }, form) {
         const { data, error } = await signUp(form);
+        alert(data)
         if(!data){
             commit("AUTH_ERROR", error);
         }
     },
     async signIn( { commit },form ) {
+        
         const {data, error}  = await signIn(form);
+ 
         if(data){
             commit("SIGN_SUCCESS", data);
         }

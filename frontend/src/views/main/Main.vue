@@ -7,13 +7,18 @@
         <b-col class="c-header_buttons d-flex mt-2" md="4" align-h="end" align-self="end">
           <b-row>
             <button id="popover-2">
-              <svg width="23" height="22" :fill ="activeList"><use xlink:href="@/assets/icons/sprite.svg#add"></use></svg>
+              <svg width="23" height="22"><use xlink:href="@/assets/icons/sprite.svg#add"></use></svg>
               Новая папка
             </button> 
-            <button>
-              <svg width="23" height="22" :fill ="activeList"><use xlink:href="@/assets/icons/sprite.svg#download-arrow"></use></svg>
+            <!--<button form="input_file">
+              <svg width="23" height="22"><use xlink:href="@/assets/icons/sprite.svg#download-arrow"></use></svg>
               Загрузить...
-            </button>
+            </button> -->
+            <label class="c-header_upload" for="input_upload">    
+              <svg for="input_upload" width="23" height="22"><use xlink:href="@/assets/icons/sprite.svg#download-arrow"></use></svg>
+              Загрузить...       
+              <input class="c-header_upload" name="input_upload" type="file"  v-on:change="fileUpload()"/>
+            </label>
           </b-row>
         </b-col>
         <b-col class="d-flex flex-row-reverse">
@@ -47,8 +52,8 @@
                 :date="item.date"
                 :link="item.link"
                 :selection="selection"
-                @selectBlock="select(item.uid)"
-                @selectManyBlock="selectMany(item.uid)"
+                @selectBlock="select(item)"
+                @selectManyBlock="selectMany(item)"
                 @switchContextmenu="switchContextmenu($event, item.uid)"
               />
             </div>
@@ -113,7 +118,10 @@
       <!--Modals-->
       <NewFileModal/> 
       <NewFolderModal/>
-
+      <InfoFileModal :selection="selection"/>
+      <InfoFolderModal :selection="selection"/>
+      <RenameModal :selection="selection"/>
+      
       <!--Contextmenu-->
       <MainContextmenu @closeMenu="closeMenu"/>
       <FolderContextmenu @closeMenu="closeMenu"/>
@@ -129,7 +137,7 @@
 
 <script>
 import { contextMenu } from '@/utils/contextMenu'
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
     name: "Main",
@@ -138,6 +146,9 @@ export default {
       SelectionBar: () => import("@/components/main/SelectionBar.vue"),
       NewFolderModal: () => import("@/components/main/NewFolderModal.vue"),
       NewFileModal: () => import("@/components/main/NewFileModal.vue"),
+      InfoFileModal: () => import("@/components/main/InfoFileModal.vue"),
+      InfoFolderModal: () => import("@/components/main/InfoFolderModal.vue"),
+      RenameModal: () => import("@/components/main/RenameModal.vue"),
       MainContextmenu: () => import("@/components/main/MainContextmenu.vue"),
       FolderContextmenu: () => import("@/components/main/FolderContextmenu.vue"),
       FileContextmenu: () => import("@/components/main/FileContextmenu.vue"),
@@ -193,7 +204,7 @@ export default {
     computed: {
       ...mapGetters({
         getElements: "elements",
-        uidUser: "uidUser",
+        getLoadingStatus: "getLoadingStatus"
       }),
       activeGrid(){
         return this.viewBlock ? '#000000': '#CCCCCC';
@@ -203,7 +214,6 @@ export default {
       }
     },
     methods: {
-      ...mapActions({ elements: "getElements"}),
       switchBlock(){  
         this.viewBlock = true;
         this.viewList = false;
@@ -212,15 +222,18 @@ export default {
         this.viewList = true;
         this.viewBlock = false;
       },
-      select(uid){
+      select(item){
           this.selection.length = 0;
-          this.selection.push(uid);
+          this.selection.push(item);
       },
-      selectMany(uid){
-        this.selection.push(uid);
+      selectMany(item){
+        this.selection.push(item);
       },
       clearSelection(){
         this.selection = [];
+      },
+      fileUpload(){
+        alert(11)
       },
       switchMenu(event){
         this.closeMenu();
@@ -246,9 +259,6 @@ export default {
         contextElement = document.getElementById("contextmenu-3");
         contextElement.style.display = 'none';
       }
-    },
-    mounted() { 
-      this.elements(this.uidUser); 
     },
 }
 </script>

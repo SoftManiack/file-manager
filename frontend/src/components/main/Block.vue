@@ -40,7 +40,7 @@
       emits: ['selectBlock','selectManyBlock','switchContextmenu'],
       computed: {
         selected(){
-          return  this.selection.includes(this.uid)
+          return  this.selection.find(item => item.uid == this.uid)
         }
       }
   }

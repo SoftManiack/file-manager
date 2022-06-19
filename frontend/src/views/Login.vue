@@ -13,6 +13,7 @@
         />
         <input 
           placeholder="Введите пароль" 
+          type="password"
           class="mt-3" 
           v-model="form.password"
         />

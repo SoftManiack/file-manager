@@ -1,11 +1,11 @@
 <template>
     <div id="contextmenu-2" class="l-main_contextmenu-main contextmenu-main" style="width: 225px" >
-        <div v-b-modal.modal-1  class="contextmenu-main_block" @click.exact="$emit('closeMenu')">
+        <div  class="contextmenu-main_block" @click.exact="$emit('closeMenu')">
           <div class="contextmenu-main_selection">
              <svg class="mr-2" width="19" height="17"><use xlink:href="@/assets/icons/sprite.svg#folder-open-2"></use></svg>
             Открыть
           </div>
-          <div class="contextmenu-main_selection">
+          <div v-b-modal.modal-infofolder class="contextmenu-main_selection">
             <svg class="mr-2" width="19" height="17"><use xlink:href="@/assets/icons/sprite.svg#info"></use></svg>
             Информация
           </div>
@@ -29,7 +29,7 @@
           </div>
         </div>
         <div class="contextmenu-main_block" @click.exact="$emit('closeMenu')">
-          <div class="contextmenu-main_selection">
+          <div v-b-modal.modal-4 class="contextmenu-main_selection">
             <svg class="mr-2" width="19" height="17"><use xlink:href="@/assets/icons/sprite.svg#edit"></use></svg>
             Переиминовать
           </div>

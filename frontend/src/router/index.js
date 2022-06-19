@@ -23,19 +23,19 @@ const routes = [
         meta: { layout: "EmptyLayout", requiresAuth: false }
     },
     {
-        path: '/fm/:uid',
+        path: '/v1/fm/:uid',
         name: 'Main',
         component: Main,
         meta: { layout: "MainLayout", requiresAuth: false }
     },
     {
-        path: '/fm/recent',
+        path: '/v1/fm/recent',
         name: 'Recent',
         component: Recent,
         meta: { layout: "MainLayout", requiresAuth: false }
     },
     {
-        path: '/fm/trash',
+        path: '/v1/fm/trash',
         name: 'Trash',
         component: Trash,
         meta: { layout: "MainLayout", requiresAuth: false }

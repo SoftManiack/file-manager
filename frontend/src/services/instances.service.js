@@ -10,10 +10,10 @@ instance.interceptors.request.use( config  => {
     return config;
 });
 
-instance.interceptors.response.use( response => {
+/* instance.interceptors.response.use( response => {
     return response;
 }, error => {
     if (401 == error.response.status){
         window.location = '/login';
     }
-})
+}) */

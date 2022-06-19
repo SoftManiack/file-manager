@@ -2,12 +2,12 @@
   <div class="c-header">
     <div class="c-header_form">
       <div class="c-header_icon">
-        <svg width="16" height="14" :fill="activeList"><use xlink:href="@/assets/icons/sprite.svg#search"></use></svg>
+        <svg width="16" height="14"><use xlink:href="@/assets/icons/sprite.svg#search"></use></svg>
       </div>
       <input class="c-header_input" placeholder="Поиск">
     </div>
     <button class="c-header_menu " id="popover-1">
-      <svg width="18" height="14" :fill ="activeList"><use xlink:href="@/assets/icons/sprite.svg#dots-vertical"></use></svg>
+      <svg width="18" height="14"><use xlink:href="@/assets/icons/sprite.svg#dots-vertical"></use></svg>
     </button>
 
     <b-popover

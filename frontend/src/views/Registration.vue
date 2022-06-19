@@ -11,13 +11,20 @@
           class="mt-4"
           v-model="form.email"
         />
+        <input
+          placeholder="Ваше имя" 
+          class="mt-3"
+          v-model="form.name"
+        />
         <input 
           placeholder="Введите пароль" 
+          type="password"
           class="mt-3" 
           v-model="form.password"
         />
          <input 
           placeholder="Повторите пароль" 
+          type="password"
           class="mt-3" 
           v-model="form.passwordRepeat"
         />
@@ -38,6 +45,7 @@ export default {
       return {
         form: {
           email: "",
+          name: "",
           password: "",
           passwordRepeat: "",
         },

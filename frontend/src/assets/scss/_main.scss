@@ -20,6 +20,15 @@
                 }
             }
         }
+        &_upload{
+            input{
+                cursor: pointer !important;
+                opacity: 0;
+                position: absolute;
+                z-index: 1000;
+                margin-left: -115px;
+            }
+        }
         &_view{
             img{
                 cursor: pointer;
@@ -173,6 +182,22 @@
                 width: 100%;
                 box-shadow: 0px 0px 0px 1px rgb(255, 51, 58);
                 color: #ff333a;
+            }
+        }
+    }
+
+    &_info-modal{
+        min-height: 31.5vh;
+        width: 810px !important;
+        .info-modal{
+            &_body{
+                display: flex !important;
+            }
+            &_left{
+                flex: 1;
+            }
+            &_right{
+                flex: 1;
             }
         }
     }
