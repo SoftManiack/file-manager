@@ -60,7 +60,7 @@ export default {
           this.error = this.signInError
           
           if ( !this.signInError ){
-            this.$router.push(`/fm/${this.uidUser}`);
+            this.$router.push(`/v1/fm/${this.uidUser}`);
           } 
         }
       }

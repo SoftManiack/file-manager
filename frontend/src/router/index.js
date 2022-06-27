@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '@/store/index'
 
 import Registration from '@/views/Registration.vue'
 import Login from '@/views/Login.vue'
@@ -26,25 +27,41 @@ const routes = [
         path: '/v1/fm/:uid',
         name: 'Main',
         component: Main,
-        meta: { layout: "MainLayout", requiresAuth: false }
+        meta: { layout: "MainLayout", requiresAuth: true }
     },
     {
         path: '/v1/fm/recent',
         name: 'Recent',
         component: Recent,
-        meta: { layout: "MainLayout", requiresAuth: false }
+        meta: { layout: "MainLayout", requiresAuth: true }
     },
     {
         path: '/v1/fm/trash',
         name: 'Trash',
         component: Trash,
-        meta: { layout: "MainLayout", requiresAuth: false }
+        meta: { layout: "MainLayout", requiresAuth: true }
     },
 ]
 
 const router = new VueRouter({
     mode: 'history',
     routes,
+})
+
+router.beforeEach((to, from, next) => {
+    if(to.matched.some( record => record.name == "Main")){
+        store.dispatch('getElements', to.path.split('fm/')[1])
+        next()
+    }
+    if(to.matched.some(record => record.meta.requiresAuth)) {
+        if(localStorage.getItem('token')) {
+            next()
+            return
+        }
+        next('/Login') 
+    }else {
+        next() 
+    }
 })
 
 export default router;

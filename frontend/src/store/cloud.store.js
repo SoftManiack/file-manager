@@ -1,10 +1,11 @@
-import { getElements, createDirectory, createFile } from '@/services/cloud.service';
+import { getElements, createDirectory, createFile, uploadFile } from '@/services/cloud.service';
 import { loadingStatuses } from "@/store/statusesLoadingConst"
 
 const mutations = {
-    GET_ELEMENTS(state, data) {
-        //state.rootUid = data.rootUid;
-        state.elements = data;
+    GET_ELEMENTS(state, payload ) {
+        state.lastRootUid = state.rootUid;
+        state.rootUid = payload.uid;
+        state.elements = payload.data;
     },
     SET_ITEMS(state, data){
         state.elements.push(data);
@@ -16,11 +17,13 @@ const mutations = {
 
 const actions = {
     async getElements( { commit }, uid) {
+        
         commit("UPDATE_STATUS", loadingStatuses.Loading);
         const data = await getElements(uid);
-        if(data){
+        if(data || data == null){
+            console.log(data)
             commit("UPDATE_STATUS", loadingStatuses.Ready);
-            commit("GET_ELEMENTS", data);
+            commit("GET_ELEMENTS", { data, uid } );
         }else{
             commit("UPDATE_STATUS", loadingStatuses.Error);
             commit("ELEMENTS_ERROR", "Нет данных");
@@ -43,19 +46,30 @@ const actions = {
         if(error){
             commit("ELEMENTS_ERROR", error);
         }
-    }
+    },
+    async uploadFile( { commit }, file){
+        const { data, error } = await uploadFile(file)
+        if(data){
+            commit("SET_ITEMS", data);
+        }
+        if(error){
+            commit("ELEMENTS_ERROR", error);
+        }
+    },
 }
 
 const getters = {
     elements: (state) => state.elements,
     errorElement: (state) => state.error,
-    rootUid: (state) => state.rootuid || localStorage.getItem('uid'),
+    rootUid: (state) => state.rootUid,
+    lastRootUid: (state) => state.lastRootUid,
 }
 
 const state = () => ({
     error: "",
     elements: [{uid: "", rootUid: "", name: "", size: "", type: "", isFavorite: false, date: "", link: false}],
-    rootuid: "",
+    rootUid: "",
+    lastRootUid: "",
 })
 
 export default {

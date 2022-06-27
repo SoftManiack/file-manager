@@ -28,7 +28,7 @@ export default {
   methods: {
     ...mapActions({ elements: "getElements"})
   },
-  mounted() { 
+  created() { 
     this.elements(this.uidUser); 
   },
 }

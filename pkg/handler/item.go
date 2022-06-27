@@ -122,6 +122,7 @@ func (h *Handler) Delete(c *gin.Context) {
 
 func (h *Handler) Upload(c *gin.Context) {
 
+	//uid := c.Param("uid")
 	// Получить заголовок файла
 	file, err := c.FormFile("upload")
 	if err != nil {
@@ -130,6 +131,7 @@ func (h *Handler) Upload(c *gin.Context) {
 	}
 	// Получить имя файла
 	fileName := file.Filename
+	fmt.Println("Тип:", file.Header)
 	fmt.Println("Имя файла:", fileName)
 
 	path := fmt.Sprintf("C:/Програмирование/Проекты/file-manager/cloud/%s", fileName)
@@ -139,6 +141,7 @@ func (h *Handler) Upload(c *gin.Context) {
 		c.String(http.StatusBadRequest, "Ошибка сохранения:%s", err.Error())
 		return
 	}
+
 	c.String(http.StatusOK, "Успешно загруженный файл")
 
 }

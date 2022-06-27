@@ -4,6 +4,7 @@
     @click.ctrl.exact="$emit('selectManyBlock')"
     @click.exact="$emit('selectBlock')" 
     @contextmenu="$emit('switchContextmenu', $event), $emit('selectBlock')"
+    @dblclick="$emit('openDirectory')"
     :class="{'c-block--select': selected}">
     <div class="d-flex justify-content-end c-block_favorites px-2 mt-2">
       <div v-if="isFavorites == true" >

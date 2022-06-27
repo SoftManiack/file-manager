@@ -18,6 +18,7 @@ type Items interface {
 	CreateTextFile(input item.NewFile, uid string) (item.Item, error)
 	Rename(uid, newName string) error
 	Delete(uid, userUid string) error
+	//Upload(file *multipart.FileHeader, uid string) (item.Item, error)
 }
 
 type Service struct {

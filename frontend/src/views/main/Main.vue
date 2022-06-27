@@ -10,14 +10,10 @@
               <svg width="23" height="22"><use xlink:href="@/assets/icons/sprite.svg#add"></use></svg>
               Новая папка
             </button> 
-            <!--<button form="input_file">
-              <svg width="23" height="22"><use xlink:href="@/assets/icons/sprite.svg#download-arrow"></use></svg>
-              Загрузить...
-            </button> -->
             <label class="c-header_upload" for="input_upload">    
               <svg for="input_upload" width="23" height="22"><use xlink:href="@/assets/icons/sprite.svg#download-arrow"></use></svg>
               Загрузить...       
-              <input class="c-header_upload" name="input_upload" type="file"  v-on:change="fileUpload()"/>
+              <input class="c-header_upload" name="input_upload" type="file" ref="file" v-on:change="fileUpload()"/>
             </label>
           </b-row>
         </b-col>
@@ -40,7 +36,7 @@
         @contextmenu.self="switchMenu"
         :class="{'l-main_data--bar':selection.length}">
         <!-- View Block -->
-        <div v-if="getElements[0].uid"> 
+        <div v-if="getElements != null"> 
           <div @click.capture.self="clearSelection" @contextmenu.self="switchMenu" v-if="viewBlock" class="d-flex flex-row flex-wrap mt-3">
             <div @click.capture.self="clearSelection" @contextmenu.self="switchMenu" v-for="(item, key) in getElements" :key="key">
               <Block
@@ -55,6 +51,7 @@
                 @selectBlock="select(item)"
                 @selectManyBlock="selectMany(item)"
                 @switchContextmenu="switchContextmenu($event, item.uid)"
+                @openDirectory="openDirectory(item)"
               />
             </div>
           </div>
@@ -87,8 +84,15 @@
           </b-row>
         </div>
         </div>
-        <div v-else>
-          <p>Папка пуста</p>
+        <div  
+          @click="closeMenu"
+          @contextmenu.self="switchMenu"
+          class="l-main_empty-dir d-flex justify-content-center align-items-center" v-else 
+        >
+          <div>
+            <svg  width="161" height="161"><use xlink:href="@/assets/icons/sprite.svg#folder-empty"></use></svg>
+            <h3 class="justify-content-center"> Папка пуста  </h3>
+          </div>
         </div>
       </b-container>
       
@@ -137,7 +141,7 @@
 
 <script>
 import { contextMenu } from '@/utils/contextMenu'
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
     name: "Main",
@@ -157,6 +161,7 @@ export default {
       return {
         viewList: false,
         viewBlock: true,
+        file: '',
         items: [
           {
             text: 'Admin',
@@ -204,6 +209,7 @@ export default {
     computed: {
       ...mapGetters({
         getElements: "elements",
+        getRootUid: "rootUid",
         getLoadingStatus: "getLoadingStatus"
       }),
       activeGrid(){
@@ -214,6 +220,7 @@ export default {
       }
     },
     methods: {
+      ...mapActions({ loadElements: "getElements"}),
       switchBlock(){  
         this.viewBlock = true;
         this.viewList = false;
@@ -233,7 +240,15 @@ export default {
         this.selection = [];
       },
       fileUpload(){
-        alert(11)
+        this.file = this.$refs.file.files[0]
+        let formData = new FormData();
+        formData.append('file', this.file);
+      },
+      async openDirectory(item){
+        if(item.type == 'Directory'){
+          await this.loadElements(item.uid)
+          this.$router.push(`/v1/fm/${this.getRootUid}`);
+        }
       },
       switchMenu(event){
         this.closeMenu();

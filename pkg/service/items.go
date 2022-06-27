@@ -86,6 +86,11 @@ func (s *ItemService) CreateTextFile(input item.NewFile, uid string) (item.Item,
 	return item, err
 }
 
+/*func (s *ItemService) Upload(file *multipart.FileHeader, uid string) (item.Item, error) {
+
+	return item.Item{}, nil
+}*/
+
 func (s *ItemService) Rename(uid, newName string) error {
 
 	err := s.repo.Rename(uid, newName)
