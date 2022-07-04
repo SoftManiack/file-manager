@@ -5,7 +5,11 @@ const mutations = {
     GET_ELEMENTS(state, payload ) {
         state.lastRootUid = state.rootUid;
         state.rootUid = payload.uid;
-        state.elements = payload.data;
+        if(payload.data != null){
+            state.elements = payload.data;
+        }else{
+            state.elements = [{uid: "", rootUid: "", date: "",  extension: "", name: "", type: "", isFavorite: false, link: false, size: "", trash: false}]
+        }
     },
     SET_ITEMS(state, data){
         state.elements.push(data);
@@ -67,7 +71,7 @@ const getters = {
 
 const state = () => ({
     error: "",
-    elements: [{uid: "", rootUid: "", name: "", size: "", type: "", isFavorite: false, date: "", link: false}],
+    elements: [{uid: "", rootUid: "", date: "",  extension: "", name: "", type: "", isFavorite: false, link: false, size: "", trash: false}],
     rootUid: "",
     lastRootUid: "",
 })

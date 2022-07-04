@@ -190,17 +190,20 @@
     }
 
     &_info-modal{
-        min-height: 31.5vh;
-        width: 810px !important;
+        min-height: 33.5vh;
+        width: 1510px !important;
         .info-modal{
             &_body{
                 display: flex !important;
             }
             &_left{
-                flex: 1;
+                min-height: 33.5vh;
+                background-color: #fafafa;
+                flex: 4;
             }
             &_right{
-                flex: 1;
+                min-height: 33.5vh;
+                flex: 5;
             }
         }
     }

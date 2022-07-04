@@ -7,7 +7,7 @@
         <router-view/>
       </main>
     </div>
-    1
+    <span class="loader d-flex justify-content-center align-items-center"></span>
   </div>
 </template>
 
@@ -36,5 +36,25 @@ export default {
 </script>
 
 <style>
+  .loader {
+      width: 48px;
+      height: 48px;
+      border: 5px solid #FFF;
+      border-bottom-color: #FF3D00;
+      border-radius: 50%;
+      display: block;
+      margin: auto;
+      margin-top: 40vh;
+      box-sizing: border-box;
+      animation: rotation 1s linear infinite;
+    }
 
+    @keyframes rotation {
+      0% {
+          transform: rotate(0deg);
+      }
+      100% {
+          transform: rotate(360deg);
+      }
+    } 
 </style>

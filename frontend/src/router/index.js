@@ -27,19 +27,19 @@ const routes = [
         path: '/v1/fm/:uid',
         name: 'Main',
         component: Main,
-        meta: { layout: "MainLayout", requiresAuth: true }
+        meta: { layout: "MainLayout", requiresAuth: true, keepAlive: true }
     },
     {
         path: '/v1/fm/recent',
         name: 'Recent',
         component: Recent,
-        meta: { layout: "MainLayout", requiresAuth: true }
+        meta: { layout: "MainLayout", requiresAuth: true, keepAlive: true }
     },
     {
         path: '/v1/fm/trash',
         name: 'Trash',
         component: Trash,
-        meta: { layout: "MainLayout", requiresAuth: true }
+        meta: { layout: "MainLayout", requiresAuth: true, keepAlive: true }
     },
 ]
 
@@ -50,8 +50,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     if(to.matched.some( record => record.name == "Main")){
-        store.dispatch('getElements', to.path.split('fm/')[1])
-        next()
+        store.dispatch('getElements', to.path.split('fm/')[1]).then(next())
     }
     if(to.matched.some(record => record.meta.requiresAuth)) {
         if(localStorage.getItem('token')) {

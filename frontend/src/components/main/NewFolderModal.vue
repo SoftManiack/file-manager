@@ -67,12 +67,13 @@ export default {
         this.$refs['modal-1'].hide();
       },
       async createDirectory(){
-        if(this.getElements.find(item => item.name == this.form.name)){
+        if(this.getElements != null && this.getElements.find(item => item.name == this.form.name)){
           this.error = "Уже есть элемент с таким именем";
         }
         else if(this.form.name == ""){
           this.error = "Укажите имя папки";
         }else{
+          alert(this.rootUid)
           this.form.rootUid = this.rootUid;
           this.error = null;
           await this.createDir(this.form);

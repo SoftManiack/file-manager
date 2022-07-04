@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-for="item in data" v-bind:key="item.uid">
-            <router-link class="c-nav_item pl-2 pt-1" :to="{ name: 'Main', params: { uid: getRootUid }}" @click.native="toggleActive('disk')">
+            <router-link class="c-nav_item pl-2 pt-1" :to="{ name: 'Main', params: { uid: getUidUser }}" @click.native="toggleActive('disk')">
                 <div v-if="item.disclosed" @click="toggleClose">
                     <svg class="ml-1 mr-1 c-nav_arrow" height="8" width="8"><use xlink:href="@/assets/icons/sprite.svg#right-arrow"></use></svg>
                 </div>
@@ -108,7 +108,7 @@ export default {
     },
     computed: {
         ...mapGetters({
-            getRootUid: "rootUid",
+            getUidUser: "uidUser",
         }),
         activeDisk(){
             return this.active.disk ? '#2ba6de': '#6b6b6b';

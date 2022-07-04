@@ -36,7 +36,7 @@
         @contextmenu.self="switchMenu"
         :class="{'l-main_data--bar':selection.length}">
         <!-- View Block -->
-        <div v-if="getElements != null"> 
+        <div v-if="getElements[0].uid != '' "> 
           <div @click.capture.self="clearSelection" @contextmenu.self="switchMenu" v-if="viewBlock" class="d-flex flex-row flex-wrap mt-3">
             <div @click.capture.self="clearSelection" @contextmenu.self="switchMenu" v-for="(item, key) in getElements" :key="key">
               <Block
