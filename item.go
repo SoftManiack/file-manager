@@ -1,21 +1,31 @@
 package filemanager
 
-const (
-	FILE string = "File"
-	DIR         = "Directory"
-)
+type Items struct {
+	Directory []Directory
+	File      []File
+}
 
-type Item struct {
+type Directory struct {
+	Uid          string `json:"uid" db:"uid"`
+	UsersUid     string `json:"uidUsers" db:"users_uid"`
+	RootUid      string `json:"rootUid" db:"root_uid"`
+	DateUpdate   string `json:"date" db:"date_update"`
+	Name         string `json:"name" db:"name"`
+	IsFavorites  string `json:"isFavorite" db:"is_favorites"`
+	Size         string `json:"size" db:"size"`
+	Type         string `json:"type" db:"type"`
+	CountElement string `json:"countElement" db:"count_element"`
+}
+
+type File struct {
 	Uid         string `json:"uid" db:"uid"`
 	RootUid     string `json:"rootUid" db:"root_uid"`
-	Date        string `json:"date" db:"date"`
-	Extension   string `json:"extension" db:"extension"`
+	DateUpdate  string `json:"date" db:"date_update"`
 	Name        string `json:"name" db:"name"`
+	IsFavorites string `json:"isFavorite" db:"is_favorites"`
+	Extension   string `json:"extension" db:"extension"`
 	Type        string `json:"type" db:"type"`
-	IsFavorites bool   `json:"isFavorite" db:"is_favorites"`
-	Link        bool   `json:"link" db:"link"`
 	Size        string `json:"size" db:"size"`
-	Trash       bool   `json:"trash" db:"trash"`
 }
 
 type NewDirectory struct {
@@ -30,5 +40,6 @@ type NewFile struct {
 }
 
 type Rename struct {
-	Name string `json:"name"`
+	NewName string `json:"newName"`
+	Type    string `json:"type"`
 }

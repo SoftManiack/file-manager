@@ -2,13 +2,15 @@ package handler
 
 import (
 	item "file-manager"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) GetItems(c *gin.Context) {
+
+	var directories []item.Directory
+	var files []item.File
 
 	rootuid := c.Param("uid")
 	//time.Sleep(3 * time.Second)
@@ -18,11 +20,9 @@ func (h *Handler) GetItems(c *gin.Context) {
 		return
 	}
 
-	items, err := h.services.GetItems(rootuid)
+	directories, files, err := h.services.GetItems(rootuid)
 
-	/*if len(items) == 1 {
-		items = []item.Item{}
-	}*/
+	items := item.Items{directories, files}
 
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -46,14 +46,14 @@ func (h *Handler) CreateDirectory(c *gin.Context) {
 		return
 	}
 
-	item, err := h.services.CreateDirectory(input, userUid)
+	directory, err := h.services.CreateDirectory(input, userUid)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, item)
+	c.JSON(http.StatusOK, directory)
 }
 
 func (h *Handler) CreateTextFile(c *gin.Context) {
@@ -79,6 +79,7 @@ func (h *Handler) CreateTextFile(c *gin.Context) {
 func (h *Handler) Rename(c *gin.Context) {
 
 	var input item.Rename
+
 	uid := c.Param("uid")
 
 	if err := c.BindJSON(&input); err != nil || uid == "" {
@@ -86,7 +87,7 @@ func (h *Handler) Rename(c *gin.Context) {
 		return
 	}
 
-	err := h.services.Rename(uid, input.Name)
+	err := h.services.Rename(uid, input)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -96,6 +97,7 @@ func (h *Handler) Rename(c *gin.Context) {
 	c.JSON(http.StatusOK, statusResponse{"ok"})
 }
 
+/*
 func (h *Handler) Delete(c *gin.Context) {
 
 	uid := c.Param("uid")
@@ -145,3 +147,4 @@ func (h *Handler) Upload(c *gin.Context) {
 	c.String(http.StatusOK, "Успешно загруженный файл")
 
 }
+*/

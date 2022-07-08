@@ -7,7 +7,7 @@
       <input class="c-header_input" placeholder="Поиск">
     </div>
     <button class="c-header_menu " id="popover-1">
-      <svg width="18" height="14"><use xlink:href="@/assets/icons/sprite.svg#dots-vertical"></use></svg>
+      <svg width="20" height="16"><use xlink:href="@/assets/icons/sprite.svg#dots-vertical"></use></svg>
     </button>
 
     <b-popover

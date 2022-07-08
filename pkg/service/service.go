@@ -13,11 +13,11 @@ type Authorization interface {
 }
 
 type Items interface {
-	GetItems(rootuid string) ([]item.Item, error)
-	CreateDirectory(input item.NewDirectory, uid string) (item.Item, error)
-	CreateTextFile(input item.NewFile, uid string) (item.Item, error)
-	Rename(uid, newName string) error
-	Delete(uid, userUid string) error
+	GetItems(rootuid string) ([]item.Directory, []item.File, error)
+	CreateDirectory(input item.NewDirectory, uid string) (item.Directory, error)
+	CreateTextFile(input item.NewFile, uid string) (item.File, error)
+	Rename(uid string, input item.Rename) error
+	//Delete(uid, userUid string) error
 	//Upload(file *multipart.FileHeader, uid string) (item.Item, error)
 }
 

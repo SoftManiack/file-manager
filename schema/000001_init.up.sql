@@ -9,12 +9,14 @@ CREATE TABLE users
 CREATE TABLE directories
 (
     uid UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
-    users_uid REFERENCES users (uid) ON DELETE CASCADE NOT NULL,
-    root_uid UUID REFERENCES directories (uid) ON DELETE CASCADE NOT NULL,
+    users_uid UUID REFERENCES users(uid) ON DELETE CASCADE NOT NULL,
+    root_uid UUID REFERENCES directories(uid) ON DELETE CASCADE NOT NULL,
     date_update TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    name VARCHAR(255) NOT NULL,
     is_favorites BOOLEAN DEFAULT FALSE,
-    size VARCHAR(255) NOT NULL DEFAULT '0',
-    count_element INTEGER NOT NULL DEFAULT 0
+    size BIGINT NOT NULL DEFAULT 0,
+    count_element INTEGER NOT NULL DEFAULT 0,
+    type VARCHAR(255) NOT NULL DEFAULT 'Directory'
 );
 
 CREATE TABLE files
@@ -25,7 +27,8 @@ CREATE TABLE files
     name VARCHAR(255) NOT NULL,
     is_favorites BOOLEAN DEFAULT FALSE,
     extension VARCHAR(255) NOT NULL,
-    size VARCHAR(255) NOT NULL DEFAULT '0'
+    size BIGINT NOT NULL DEFAULT 0,
+    type VARCHAR(255) NOT NULL DEFAULT 'File'
 );
 
 CREATE TABLE link
@@ -45,7 +48,6 @@ CREATE TABLE link_directories
     link_uid UUID REFERENCES link (uid) ON DELETE CASCADE NOT NULL,
     directories_uid UUID REFERENCES directories (uid) ON DELETE CASCADE NOT NULL
 );
-
 
 CREATE TABLE reсent
 (

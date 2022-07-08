@@ -17,58 +17,62 @@ func NewItemsPostgres(db *sqlx.DB) *ItemsPostgres {
 	return &ItemsPostgres{db: db}
 }
 
-func (r *ItemsPostgres) GetItems(rootuid string) ([]item.Item, error) {
+func (r *ItemsPostgres) GetItems(rootuid string) ([]item.Directory, []item.File, error) {
 
-	var items []item.Item
+	var directories []item.Directory
+	var files []item.File
 
-	queryGetAll := fmt.Sprintf("SELECT * FROM %s WHERE root_uid = $1 AND root_uid <> uid", itemsTable)
-	err := r.db.Select(&items, queryGetAll, rootuid)
+	queryGetDirectories := fmt.Sprintf("SELECT * FROM %s WHERE root_uid = $1 AND root_uid <> uid", directoriesTable)
+	err := r.db.Select(&directories, queryGetDirectories, rootuid)
 
-	return items, err
+	queryGetFiles := fmt.Sprintf("SELECT * FROM %s WHERE root_uid = $1 AND root_uid <> uid", filesTable)
+	err = r.db.Select(&files, queryGetFiles, rootuid)
+
+	return directories, files, err
 }
 
-func (r *ItemsPostgres) CreateDirectory(input item.NewDirectory) (item.Item, error) {
+func (r *ItemsPostgres) CreateDirectory(input item.NewDirectory, userUid string) (item.Directory, error) {
 
-	var newItem item.Item
+	var newDirectory item.Directory
 	var uid string = ""
 
-	queryGetUid := fmt.Sprintf("SELECT uid FROM %s WHERE name = $1 AND root_uid = $2 AND type = $3", itemsTable)
-	fmt.Println(queryGetUid)
-	queryCreateDirectory := fmt.Sprintf("INSERT INTO %s ( root_uid, name, type, is_favorites, link, extension) values ($1, $2, $3, $4, $5, $6) RETURNING uid", itemsTable)
-	queryGetDirectory := fmt.Sprintf("SELECT * FROM %s WHERE uid = $1", itemsTable)
+	queryGetUid := fmt.Sprintf("SELECT uid FROM %s WHERE name = $1", directoriesTable)
+	queryCreateDirectory := fmt.Sprintf("INSERT INTO %s ( users_uid, root_uid, name, is_favorites, count_element) values ($1, $2, $3, $4, $5) RETURNING uid", directoriesTable)
+	queryGetDirectory := fmt.Sprintf("SELECT * FROM %s WHERE uid = $1", directoriesTable)
 
-	err := r.db.Get(&uid, queryGetUid, input.Name, input.RootUid, item.DIR)
+	err := r.db.Get(&uid, queryGetUid, input.Name)
 
 	if uid != "" {
-		return newItem, errors.New("Такое имя уже существует")
+		return newDirectory, errors.New("Такое имя уже существует")
 	}
 
+	fmt.Println(userUid)
 	if err == sql.ErrNoRows {
-		row := r.db.QueryRow(queryCreateDirectory, input.RootUid, input.Name, item.DIR, false, false, "dir")
+		row := r.db.QueryRow(queryCreateDirectory, userUid, input.RootUid, input.Name, false, 0)
 		if err := row.Scan(&uid); err != nil {
-			return newItem, err
+			return newDirectory, err
 		}
 
-		if err := r.db.Get(&newItem, queryGetDirectory, uid); err != nil {
-			return newItem, err
+		if err := r.db.Get(&newDirectory, queryGetDirectory, uid); err != nil {
+			return newDirectory, err
 		}
 
 	} else {
-		return newItem, err
+		return newDirectory, err
 	}
 
-	return newItem, nil
+	return newDirectory, nil
 }
 
-func (r *ItemsPostgres) CreateTextFile(input item.NewFile) (item.Item, error) {
-	var newItem item.Item
+func (r *ItemsPostgres) CreateTextFile(input item.NewFile) (item.File, error) {
+	var newItem item.File
 	var uid string = ""
 
-	queryGetUid := fmt.Sprintf("SELECT uid FROM %s WHERE name = $1 AND root_uid = $2 AND type = $3", itemsTable)
-	queryCreateFile := fmt.Sprintf("INSERT INTO %s ( root_uid, name, type, is_favorites, link, extension ) values ($1, $2, $3, $4, $5, $6) RETURNING uid", itemsTable)
-	queryGetFile := fmt.Sprintf("SELECT * FROM %s WHERE uid = $1", itemsTable)
+	queryGetUid := fmt.Sprintf("SELECT uid FROM %s WHERE name = $1 AND root_uid = $2", filesTable)
+	queryCreateFile := fmt.Sprintf("INSERT INTO %s ( root_uid, name, extension ) values ($1, $2, $3) RETURNING uid", filesTable)
+	queryGetFile := fmt.Sprintf("SELECT * FROM %s WHERE uid = $1", filesTable)
 
-	err := r.db.Get(&uid, queryGetUid, input.Name, input.RootUid, item.FILE)
+	err := r.db.Get(&uid, queryGetUid, input.Name, input.RootUid)
 
 	if uid != "" {
 		return newItem, errors.New("Такое имя уже существует")
@@ -76,7 +80,7 @@ func (r *ItemsPostgres) CreateTextFile(input item.NewFile) (item.Item, error) {
 
 	if err == sql.ErrNoRows {
 		fmt.Println("ok")
-		row := r.db.QueryRow(queryCreateFile, input.RootUid, input.Name, item.FILE, false, false, ".txt")
+		row := r.db.QueryRow(queryCreateFile, input.RootUid, input.Name, "txt")
 		if err := row.Scan(&uid); err != nil {
 			return newItem, err
 		}
@@ -93,20 +97,26 @@ func (r *ItemsPostgres) CreateTextFile(input item.NewFile) (item.Item, error) {
 
 }
 
-func (r *ItemsPostgres) Rename(uid, newName string) error {
+func (r *ItemsPostgres) Rename(uid string, input item.Rename) error {
 
-	queryRename := fmt.Sprintf("UPDATE %s SET name = $1 WHERE uid = $2", itemsTable)
+	var queryRename string
 
-	_, err := r.db.Exec(queryRename, newName, uid)
+	if input.Type == "directory" {
+		queryRename = fmt.Sprintf("UPDATE %s SET name = $1 WHERE uid = $2", directoriesTable)
+	} else {
+		queryRename = fmt.Sprintf("UPDATE %s SET name = $1 WHERE uid = $2", filesTable)
+	}
+
+	_, err := r.db.Exec(queryRename, input.NewName, uid)
 
 	return err
 }
 
-func (r *ItemsPostgres) Delete(uid string) error {
+/*func (r *ItemsPostgres) Delete(uid string) error {
 
 	queryDelete := fmt.Sprintf("DELETE FROM %s WHERE uid = $1", itemsTable)
 
 	_, err := r.db.Exec(queryDelete, uid)
 
 	return err
-}
+}*/

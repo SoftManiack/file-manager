@@ -6,9 +6,10 @@ const mutations = {
         state.lastRootUid = state.rootUid;
         state.rootUid = payload.uid;
         if(payload.data != null){
-            state.elements = payload.data;
+            state.elements = payload.data.Directory;
+            state.elements.push(...payload.data.File);
         }else{
-            state.elements = [{uid: "", rootUid: "", date: "",  extension: "", name: "", type: "", isFavorite: false, link: false, size: "", trash: false}]
+            state.elements = [{uid: "", uidUsers: "", rootUid: "", date: "", name: "", isFavorite: false, size: 0, type: "File", countElement: 0}]
         }
     },
     SET_ITEMS(state, data){
@@ -21,7 +22,6 @@ const mutations = {
 
 const actions = {
     async getElements( { commit }, uid) {
-        
         commit("UPDATE_STATUS", loadingStatuses.Loading);
         const data = await getElements(uid);
         if(data || data == null){
@@ -71,7 +71,7 @@ const getters = {
 
 const state = () => ({
     error: "",
-    elements: [{uid: "", rootUid: "", date: "",  extension: "", name: "", type: "", isFavorite: false, link: false, size: "", trash: false}],
+    elements: [{uid: "", uidUsers: "", rootUid: "", date: "", name: "", isFavorite: false, size: 0, type: "File", countElement: 0}],
     rootUid: "",
     lastRootUid: "",
 })

@@ -13,11 +13,11 @@ type Authorization interface {
 }
 
 type Items interface {
-	GetItems(rootuid string) ([]item.Item, error)
-	CreateDirectory(input item.NewDirectory) (item.Item, error)
-	CreateTextFile(input item.NewFile) (item.Item, error)
-	Rename(uid, newName string) error
-	Delete(uid string) error
+	GetItems(rootuid string) ([]item.Directory, []item.File, error)
+	CreateDirectory(input item.NewDirectory, userUid string) (item.Directory, error)
+	CreateTextFile(input item.NewFile) (item.File, error)
+	Rename(uid string, newName item.Rename) error
+	//Delete(uid string) error
 }
 
 type Repository struct {

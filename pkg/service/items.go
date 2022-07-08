@@ -29,42 +29,43 @@ func NewItemService(repo repository.Items) *ItemService {
 	return &ItemService{repo: repo}
 }
 
-func (s *ItemService) GetItems(rootuid string) ([]item.Item, error) {
+func (s *ItemService) GetItems(rootuid string) ([]item.Directory, []item.File, error) {
 
-	var items []item.Item
+	var directories []item.Directory
+	var files []item.File
 
-	items, err := s.repo.GetItems(rootuid)
+	directories, files, err := s.repo.GetItems(rootuid)
 
 	if err != nil {
-		return items, err
+		return directories, files, err
 	}
 
-	return items, err
+	return directories, files, err
 
 }
 
-func (s *ItemService) CreateDirectory(input item.NewDirectory, uid string) (item.Item, error) {
+func (s *ItemService) CreateDirectory(input item.NewDirectory, uid string) (item.Directory, error) {
 
-	var item item.Item
+	var directory item.Directory
 
 	fmt.Println(input.RootUid)
 	pathRoot, _ := findRoot(uid, input.RootUid)
 
-	item, err := s.repo.CreateDirectory(input)
+	directory, err := s.repo.CreateDirectory(input, uid)
 
 	if err != nil {
-		return item, err
+		return directory, err
 	}
 
-	err = os.Mkdir(pathRoot+"/"+item.Uid, 0777)
+	err = os.Mkdir(pathRoot+"/"+directory.Uid, 0777)
 
-	return item, err
+	return directory, err
 }
 
-func (s *ItemService) CreateTextFile(input item.NewFile, uid string) (item.Item, error) {
+func (s *ItemService) CreateTextFile(input item.NewFile, uid string) (item.File, error) {
 	fmt.Println("CreateTextFile")
 
-	var item item.Item
+	var item item.File
 
 	pathRoot, _ := findRoot(uid, input.RootUid)
 	fmt.Println(pathRoot)
@@ -86,16 +87,16 @@ func (s *ItemService) CreateTextFile(input item.NewFile, uid string) (item.Item,
 	return item, err
 }
 
-/*func (s *ItemService) Upload(file *multipart.FileHeader, uid string) (item.Item, error) {
+func (s *ItemService) Rename(uid string, input item.Rename) error {
+
+	err := s.repo.Rename(uid, input)
+	return err
+}
+
+/*
+func (s *ItemService) Upload(file *multipart.FileHeader, uid string) (item.Item, error) {
 
 	return item.Item{}, nil
-}*/
-
-func (s *ItemService) Rename(uid, newName string) error {
-
-	err := s.repo.Rename(uid, newName)
-
-	return err
 }
 
 func (s *ItemService) Delete(uid, userUid string) error {
@@ -109,7 +110,7 @@ func (s *ItemService) Delete(uid, userUid string) error {
 
 	return err
 }
-
+*/
 func findRoot(uid, rootuid string) (string, error) {
 
 	root := fmt.Sprintf("C:/Програмирование/Проекты/file-manager/cloud/%s", uid)

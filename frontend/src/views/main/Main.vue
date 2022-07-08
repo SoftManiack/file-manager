@@ -46,7 +46,7 @@
                 :type="item.type"
                 :isFavorites="item.isFavorites"
                 :date="item.date"
-                :link="item.link"
+                :extension="item.extension"
                 :selection="selection"
                 @selectBlock="select(item)"
                 @selectManyBlock="selectMany(item)"
