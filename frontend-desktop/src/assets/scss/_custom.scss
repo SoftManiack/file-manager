@@ -1,0 +1,206 @@
+@import "layouts";
+
+@import "main/main";
+@import "recent/recent";
+@import "trash/trash";
+
+@import "auth";
+@import "navbar";
+@import "header";
+
+body{
+    font-style: normal;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    font-family: 'IstokWeb';
+    overflow-y: hidden;
+    overflow-x: hidden;
+    moz-user-select: none;
+    -khtml-user-select: none; 
+    user-select: none;
+}
+html {
+    height: 100%;
+}
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+    opacity: 0;
+}
+.wide-popover { 
+    max-width: 400px; 
+}
+.app{   
+    width: 100%;
+}
+.b-popover{
+    max-width: 400px;
+    box-shadow: 0px 0px 3px 5px rgba(243, 243, 243, 0.6);
+    border: 1px solid rgb(226, 226, 226, 0.5);
+    border-radius: 11px;
+}
+.header-popover{
+    width: 250px;
+    height: 24vh;
+    &_user{
+        height: 10vh;
+        border-bottom: 1px solid #eeeeee;
+    }
+    &_avatar{
+        background-color: #ffc400;
+        border-radius: 5px;
+        width: 54px;
+        height: 54px;
+        h5{
+            color: #ffffff;
+            padding: 24%;
+            text-align: center;
+        }
+    }
+    a{
+        border: none;
+        text-decoration: none;
+    }
+}
+.main-popover{
+    min-height: 15vh;
+    padding: 5px;
+    width: 350px;
+    &_input{
+        border: none;
+        box-shadow: 0px 0px 0px 1px rgba(238, 238, 238);
+        background-color: #fafafa;
+        border-radius: 0.1rem;
+        color: #aaaaaa;
+        height: 4.6vh
+    }
+    &_input:focus{
+        box-shadow: 0px 0px 0px 1px rgb(43, 166, 222);
+    }
+    &_input:hover{
+        transition: all 0.5s;
+        box-shadow: 0px 0px 0px 1px rgb(43, 166, 222);
+    }
+    &_input--error{
+        box-shadow: 0px 0px 0px 1px rgb(255, 51, 58);
+        color: rgb(255, 51, 58);
+    }
+    &_exit{
+        border: 3px solid #e4e4e4;
+        border-radius: 0.3rem;
+        background: -webkit-linear-gradient(135deg, rgb(253, 253, 253) 73%, rgb(244, 244, 244));
+        background: -moz-linear-gradient(135deg, rgb(253, 253, 253) 73%, rgb(244, 244, 244));
+        background: linear-gradient(135deg, rgb(253, 253, 253) 73%, rgb(244, 244, 244));
+        color: #333333;
+        width: 4.8rem;
+        height: 2.1rem;
+        font-size: 1rem;
+    }
+    &_exit:hover{
+        transition: 0.3s all;
+        background: -webkit-linear-gradient(180deg, rgb(241, 241, 241) 74%, rgb(240, 240, 240) 89%);
+        background: -moz-linear-gradient(180deg, rgb(241, 241, 241) 74%, rgb(240, 240, 240) 89%);
+        background: linear-gradient(180deg, rgb(241, 241, 241) 74%, rgb(240, 240, 240) 89%);    
+    }
+    &_create{
+        border: 3px solid #35c6a0;
+        border-radius: 0.3rem;
+        background: -webkit-linear-gradient(135deg, rgb(59, 212, 173) 80%, rgb(28, 210, 147));
+        background: -moz-linear-gradient(135deg, rgb(59, 212, 173) 80%, rgb(28, 210, 147));
+        background: linear-gradient(135deg, rgb(59, 212, 173) 80%, rgb(28, 210, 147));
+        color: #f2ffff;
+        width: 4.8rem;
+        height: 2.1rem;
+        font-size: 1rem;
+    }   
+    &_create:hover{
+        transition: 0.3s all;
+        background: -webkit-linear-gradient(180deg, rgb(59, 209, 171) 1%, rgb(34, 182, 132) 94%);
+        background: -moz-linear-gradient(180deg, rgb(59, 209, 171) 1%, rgb(34, 182, 132) 94%);
+        background: linear-gradient(180deg, rgb(59, 209, 171) 1%, rgb(34, 182, 132) 94%);
+    }
+    &_error{
+        background-color: #ffebeb;
+        border-radius: 2px;
+        padding: 0.1rem;
+        padding-left: 0.5rem;
+        width: 100%;
+        box-shadow: 0px 0px 0px 1px rgb(255, 51, 58);
+        color: #ff333a;
+    }
+    input::before{
+        content: url('./assets/icons/right-arrow.svg');
+    }
+   
+}
+.list-group{
+    margin: 10px;
+    width: 100%;
+    button{
+        border: none;
+    }
+}
+.breadcrumb{
+    background-color: #ffffff;
+    color: #6c757d;
+    padding-top: 0 !important;
+    margin: 0 !important;
+    margin-left: -30px !important;
+    .breadcrumb-item + .breadcrumb-item::before{
+        content: url('./assets/icons/right-arrow.svg');
+    }
+    .breadcrumb-item {
+        a{
+            color: #6c757d;
+            text-decoration: none;
+            border: none;
+        }
+    }
+}
+.b-table{
+    border-top: none;
+    margin: 2px;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 0.8rem;
+    color: #494949;
+    border-collapse: separate;
+    
+    thead:hover{
+        background-color: none !important;
+    }
+    th{
+        border: none !important;
+        padding-left: 18px;
+    }
+    thead th{
+        border: none !important;
+    }
+    tbody{
+        border: none !important;
+    }
+    thead > tr {
+        border: none !important;
+    }
+    tr{
+        border-top: 1px solid silver !important;
+    }
+    tr:hover{
+        background-color: #fafafa;
+    }
+    td{
+        padding: 0.4rem;
+        padding-left: 18px;
+    }
+
+}
+.modal-content{      
+    border: none;
+    box-shadow: 0px 0px 8px 0px rgba(106, 106, 106, 0.8);
+    border-radius: 1.5rem !important;
+    .modal-body{
+        padding-top: 0;
+    }
+}

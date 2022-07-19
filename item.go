@@ -9,10 +9,12 @@ type Directory struct {
 	Uid          string `json:"uid" db:"uid"`
 	UsersUid     string `json:"uidUsers" db:"users_uid"`
 	RootUid      string `json:"rootUid" db:"root_uid"`
-	DateUpdate   string `json:"date" db:"date_update"`
+	DateCreate   string `json:"date_create" db:"date_create"`
+	DateUpdate   string `json:"date_update" db:"date_update"`
 	Name         string `json:"name" db:"name"`
 	IsFavorites  string `json:"isFavorite" db:"is_favorites"`
 	Size         string `json:"size" db:"size"`
+	Path         string `json:"path" db:"path"`
 	Type         string `json:"type" db:"type"`
 	CountElement string `json:"countElement" db:"count_element"`
 }
@@ -20,10 +22,12 @@ type Directory struct {
 type File struct {
 	Uid         string `json:"uid" db:"uid"`
 	RootUid     string `json:"rootUid" db:"root_uid"`
-	DateUpdate  string `json:"date" db:"date_update"`
+	DateCreate  string `json:"date_create" db:"date_create"`
+	DateUpdate  string `json:"date_update" db:"date_update"`
 	Name        string `json:"name" db:"name"`
 	IsFavorites string `json:"isFavorite" db:"is_favorites"`
 	Extension   string `json:"extension" db:"extension"`
+	Path        string `json:"path" db:"path"`
 	Type        string `json:"type" db:"type"`
 	Size        string `json:"size" db:"size"`
 }

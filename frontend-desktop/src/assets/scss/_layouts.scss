@@ -1,0 +1,15 @@
+.l-main-layout{
+    display: flex;
+    width: auto;
+    height: 100vh;
+    main{
+        min-width: 700px;
+        width: 100%;
+    }
+}
+
+.l-empty-layout{
+    height: 100vh;
+    background-color: #f9fafc;
+    width: auto;
+}

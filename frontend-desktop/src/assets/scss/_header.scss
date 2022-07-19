@@ -1,0 +1,49 @@
+.c-header{
+    padding-top: 1rem;
+    padding-left: 3rem;
+    display: flex;
+    &_form{
+        display: flex;
+        margin: auto;
+    }
+    &_icon{
+        background-color: #eee;
+        border-top-left-radius: 3rem;
+        border-bottom-left-radius: 3rem;
+        width: 50px;
+        height: 32px;
+        padding-left: 1rem;
+        vertical-align: auto;
+        padding-top: 0.1rem;
+        svg{
+            margin-top: 5px;
+        }
+    }
+    &_input{
+        border-top-right-radius:  3rem;
+        border-bottom-right-radius: 3rem;
+        background-color: #eee;
+        border: none;
+        width: 420px;
+        height: 32px;
+        font-size: 0.9rem;
+        color: #c2c2c2;
+    }
+    &_input:focus{
+        outline: none;
+        box-shadow: none;
+        background-color: #eee;
+    }
+    &_menu{
+        background-color: rgb(255, 255, 255);
+        margin-right: 11px;
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        border: none;
+    }
+    &_menu:hover{
+        transition: 0.5s;
+        background-color: #eeeeee;
+    }
+}

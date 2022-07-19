@@ -17,6 +17,8 @@ type Items interface {
 	CreateDirectory(input item.NewDirectory, userUid string) (item.Directory, error)
 	CreateTextFile(input item.NewFile) (item.File, error)
 	Rename(uid string, newName item.Rename) error
+	SetPath(uid, path, typeItem string) error
+	SetSize(uid, size, typeItem string) error
 	//Delete(uid string) error
 }
 

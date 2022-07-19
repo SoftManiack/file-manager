@@ -5,6 +5,7 @@ import (
 	"errors"
 	item "file-manager"
 	"fmt"
+	"time"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -100,6 +101,7 @@ func (r *ItemsPostgres) CreateTextFile(input item.NewFile) (item.File, error) {
 func (r *ItemsPostgres) Rename(uid string, input item.Rename) error {
 
 	var queryRename string
+	queryUpdateFile := fmt.Sprintf("UPDATE %s SET date_update = $1 WHERE uid = $2", filesTable)
 
 	if input.Type == "directory" {
 		queryRename = fmt.Sprintf("UPDATE %s SET name = $1 WHERE uid = $2", directoriesTable)
@@ -108,8 +110,28 @@ func (r *ItemsPostgres) Rename(uid string, input item.Rename) error {
 	}
 
 	_, err := r.db.Exec(queryRename, input.NewName, uid)
+	_, err = r.db.Exec(queryUpdateFile, time.Now(), uid)
 
 	return err
+}
+
+func (r *ItemsPostgres) SetPath(uid, path, typeItem string) error {
+
+	var querySetPath string
+
+	if typeItem == "directory" {
+		querySetPath = fmt.Sprintf("UPDATE %s SET path = $1 WHERE uid = $2", directoriesTable)
+	} else {
+		querySetPath = fmt.Sprintf("UPDATE %s SET path = $1 WHERE uid = $2", filesTable)
+	}
+
+	_, err := r.db.Exec(querySetPath, path, uid)
+
+	return err
+}
+
+func (r *ItemsPostgres) SetSize(uid, path, typeItem string) error {
+	return nil
 }
 
 /*func (r *ItemsPostgres) Delete(uid string) error {

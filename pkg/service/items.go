@@ -47,8 +47,8 @@ func (s *ItemService) GetItems(rootuid string) ([]item.Directory, []item.File, e
 func (s *ItemService) CreateDirectory(input item.NewDirectory, uid string) (item.Directory, error) {
 
 	var directory item.Directory
+	var path string
 
-	fmt.Println(input.RootUid)
 	pathRoot, _ := findRoot(uid, input.RootUid)
 
 	directory, err := s.repo.CreateDirectory(input, uid)
@@ -57,7 +57,19 @@ func (s *ItemService) CreateDirectory(input item.NewDirectory, uid string) (item
 		return directory, err
 	}
 
-	err = os.Mkdir(pathRoot+"/"+directory.Uid, 0777)
+	path = pathRoot + "/" + directory.Uid
+
+	err = os.Mkdir(path, 0777)
+
+	err = s.repo.SetPath(directory.Uid, "Облачный диск"+"/"+directory.Name, "directory")
+
+	//f, _ := os.Open(path)
+	//fi, _ := f.Stat()
+	//fmt.Printf("Size: %d\n", fi.Size())
+
+	if err != nil {
+		return directory, err
+	}
 
 	return directory, err
 }
@@ -65,26 +77,28 @@ func (s *ItemService) CreateDirectory(input item.NewDirectory, uid string) (item
 func (s *ItemService) CreateTextFile(input item.NewFile, uid string) (item.File, error) {
 	fmt.Println("CreateTextFile")
 
-	var item item.File
+	var file item.File
 
 	pathRoot, _ := findRoot(uid, input.RootUid)
 	fmt.Println(pathRoot)
-	item, err := s.repo.CreateTextFile(input)
+	file, err := s.repo.CreateTextFile(input)
 
 	if err != nil {
-		return item, err
+		return file, err
 	}
 
-	var file string = pathRoot + "/" + item.Uid + ".txt"
+	var pathFile string = pathRoot + "/" + file.Uid + ".txt"
 
-	_, err = os.Create(file)
-	err = os.WriteFile(file, []byte(input.Text), 0666)
+	_, err = os.Create(pathFile)
+	err = os.WriteFile(pathFile, []byte(input.Text), 0666)
+	err = s.repo.SetPath(file.Uid, "Облачный диск"+"/"+file.Name, "file")
+
 	if err != nil {
 		logrus.Error(err)
-		return item, err
+		return file, err
 	}
 
-	return item, err
+	return file, err
 }
 
 func (s *ItemService) Rename(uid string, input item.Rename) error {
