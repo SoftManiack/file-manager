@@ -1,37 +1,37 @@
 <template>
     <b-modal 
-        content-class="l-main_modal modal"
-        header-class="modal_header"
-        id="modal-rename"
-        ref="modal-rename"
-        hide-footer 
-        centered
+      content-class="l-main_modal modal"
+      header-class="modal_header"
+      id="modal-rename"
+      ref="modal-rename"
+      hide-footer 
+      centered
     >
-        <div class="modal_body">
-            <template v-if="selection[0].type == 'Directory'">
-                <h5 class="mb-4">Переименовать папку</h5>
-            </template>
-            <template v-else>
-                <h5 class="mb-4">Переименовать файл</h5>
-            </template>
-            <b-row class="px-3">
-                <b-form-input 
-                    class="modal_input"  
-                    :class="{'modal_input--error': Error}"
-                    :placeholder="selection[0].name"
-                    v-model="form.newName"
-                ></b-form-input>
-            </b-row>
-            <transition name="fade">
-              <div v-if="Error" class="modal_error mt-2">
-                {{ Error }}
-              </div>
-            </transition>
-            <b-row class="mt-3 px-3" align-h="end">
-                <button class="modal_exit" size="sm" @click="hideModal" >Отмена</button>
-                <button class="modal_create ml-2" size="sm" @click="rename">Переименовать</button>
-            </b-row>
-        </div>
+      <div class="modal_body">
+        <template v-if="selection[0].type == 'Directory'">
+          <h5 class="mb-4">Переименовать папку</h5>
+        </template>
+        <template v-else>
+          <h5 class="mb-4">Переименовать файл</h5>
+        </template>
+        <b-row class="px-3">
+          <b-form-input 
+            class="modal_input"  
+            :class="{'modal_input--error': Error}"
+            :placeholder="selection[0].name"
+            v-model="form.newName"
+            ></b-form-input>
+        </b-row>
+        <transition name="fade">
+          <div v-if="Error" class="modal_error mt-2">
+            {{ Error }}
+          </div>
+        </transition>
+        <b-row class="mt-3 px-3" align-h="end">
+          <button class="modal_exit" size="sm" @click="hideModal" >Отмена</button>
+          <button class="modal_create modal_rename ml-2" size="sm" @click="rename">Переименовать</button>
+        </b-row>
+      </div>
     </b-modal>
 </template>
 

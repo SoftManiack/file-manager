@@ -4,14 +4,15 @@ import { loadingStatuses } from "@/store/statusesLoadingConst"
 const mutations = {
     GET_ELEMENTS(state, payload ) {
         state.lastRootUid = state.rootUid;
-        state.rootUid = payload.uid;
-        if(payload.data != null){
+        if(payload.data.Directory || payload.data.File != null){
             state.elements = payload.data.Directory;
             state.elements.push(...payload.data.File);
-            console.log(state.elements)
         }else{
             state.elements = [{uid: "", uidUsers: "", rootUid: "", date_create: "", date_update: "", name: "", isFavorite: false, size: 0, type: "File", countElement: 0}]
         }
+    },
+    SET_ROOT(state, uid){
+        state.rootUid = uid;
     },
     SET_ITEMS(state, data){
         state.elements.push(data);
@@ -41,6 +42,9 @@ const actions = {
         if(error){
             commit("ELEMENTS_ERROR", error);
         }
+    },
+    openDirectory( { commit }, uid){
+        commit("SET_ROOT", uid);
     },
     async createFile( { commit }, form){
         const { data, error } = await createFile(form)

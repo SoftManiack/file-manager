@@ -65,16 +65,22 @@ html {
     }
 }
 .main-popover{
-    min-height: 15vh;
-    padding: 5px;
-    width: 350px;
+    min-height: 17vh;
+    padding: 15px;
+    width: 370px;
+    &_body{
+        margin-left: 1.2rem;
+        margin-right: 1.2rem;
+    }
     &_input{
         border: none;
         box-shadow: 0px 0px 0px 1px rgba(238, 238, 238);
         background-color: #fafafa;
         border-radius: 0.1rem;
         color: #aaaaaa;
-        height: 4.6vh
+        height: 4.6vh;
+        padding: 0.8rem;
+        padding-top: 0.6rem;
     }
     &_input:focus{
         box-shadow: 0px 0px 0px 1px rgb(43, 166, 222);
@@ -94,9 +100,9 @@ html {
         background: -moz-linear-gradient(135deg, rgb(253, 253, 253) 73%, rgb(244, 244, 244));
         background: linear-gradient(135deg, rgb(253, 253, 253) 73%, rgb(244, 244, 244));
         color: #333333;
-        width: 4.8rem;
-        height: 2.1rem;
+        height: 2.3rem;
         font-size: 1rem;
+        width: 5rem;
     }
     &_exit:hover{
         transition: 0.3s all;
@@ -111,8 +117,8 @@ html {
         background: -moz-linear-gradient(135deg, rgb(59, 212, 173) 80%, rgb(28, 210, 147));
         background: linear-gradient(135deg, rgb(59, 212, 173) 80%, rgb(28, 210, 147));
         color: #f2ffff;
-        width: 4.8rem;
-        height: 2.1rem;
+        width: 5rem;
+        height: 2.3rem;
         font-size: 1rem;
     }   
     &_create:hover{
@@ -129,9 +135,6 @@ html {
         width: 100%;
         box-shadow: 0px 0px 0px 1px rgb(255, 51, 58);
         color: #ff333a;
-    }
-    input::before{
-        content: url('./assets/icons/right-arrow.svg');
     }
    
 }

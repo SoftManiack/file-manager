@@ -60,6 +60,6 @@ func initConfig() error {
 
 // go mod init file-manager
 // docker run --name psql-container -p 5432:5432 -e POSTGRES_PASSWORD=123 -e PGDATA=/var/lib/postgresql/data/pgdata -d postgres
-// docker exec -it 25edc7ab257a bash
+// docker exec -it 0bd20af377c3 bash
 // psql -h localhost -p 5432 -U postgres -W
 // C:\Users\Артем\scoop\apps\migrate\4.15.1\migrate create -ext sql -dir ./schema -seq init

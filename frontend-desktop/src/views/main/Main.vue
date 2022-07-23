@@ -26,7 +26,6 @@
         </div>
       </div>
     </div>
-    <!-- -->
 
     <div 
       v-if="loadingStatus != 'LOADING'"
@@ -87,53 +86,59 @@
       
       <div  
         @click="closeMenu"
-        @contextmenu.self="switchMenu"
-        class="l-main_empty-dir d-flex justify-content-center align-items-center"
+        @contextmenu="switchMenu"
+        class="l-main_empty empty"
         v-else 
       >
-        <div>
-          <svg  width="161" height="161"><use xlink:href="@/assets/icons/sprite.svg#folder-empty"></use></svg>
-          <h3 class="justify-content-center"> Папка пуста  </h3>
+        <div
+          class="empty_block"
+        >
+          <svg  width="177" height="177"><use xlink:href="@/assets/icons/sprite.svg#folder-empty"></use></svg>
+          <h2> Папка пуста  </h2>
         </div>
       </div>
     </div>
-    <div v-if="selection.length">
+
+    <div v-if="selection[0].uid != ''">
       <SelectionBar
           :selection="selection"
         />
     </div>
+
     <b-popover
       target="popover-2"
       placement="bottom"
       triggers="focus"
     >
       <div class="main-popover">
-        <b-row>
-          <b-form-input  placeholder="Имя папки"></b-form-input>
-        </b-row>
-        <b-row class="mt-3 px-3" align-h="end">
-          <b-button class="main-popover_btnCancel" size="sm">Отмена</b-button>
-          <b-button class="main-popover_btnCreate ml-2" size="sm">Создать</b-button>
-        </b-row>
+        <div class="main-popover_body">
+          <b-row>
+            <b-form-input
+              class="main-popover_input"
+              placeholder="Имя папки" 
+            ></b-form-input>
+          </b-row>
+          <b-row class="mt-3" align-h="end">
+            <button class="main-popover_exit" size="sm">Отмена</button>
+            <button class="main-popover_create ml-2" size="sm">Создать</button>
+          </b-row>
+        </div>
       </div>
     </b-popover>
 
-      <!--Modals-->
-      <NewFileModal/> 
-      <NewFolderModal/>
-      <InfoFileModal :selection="selection"/>
-      <InfoFolderModal :selection="selection"/>
-      <RenameModal :selection="selection"/>
-      
-      <!--Contextmenu-->
-      <MainContextmenu @closeMenu="closeMenu"/>
-      <FolderContextmenu @closeMenu="closeMenu"/>
-      <FileContextmenu @closeMenu="closeMenu"/>
+    <!--Modals-->
+    <NewFileModal/> 
+    <NewFolderModal/>
+    <InfoFileModal :selection="selection"/>
+    <InfoFolderModal :selection="selection"/>
+    <RenameModal :selection="selection"/>
+    
+    <!--Contextmenu-->
+    <MainContextmenu @closeMenu="closeMenu"/>
+    <FolderContextmenu @closeMenu="closeMenu"/>
+    <FileContextmenu @closeMenu="closeMenu"/>
+    <!-- BlockMenu https://icons.getbootstrap.com/  -->
 
-      <!-- BlockMenu https://icons.getbootstrap.com/  -->
-
-      
-      <!-- BlockMenu -->
   </div>
 </template>
 
@@ -180,7 +185,7 @@ export default {
             active: true
           },
         ],
-        selection: [],
+        selection: [{uid: "", uidUsers: "", rootUid: "", date_create: "", date_update: "", name: "", isFavorite: false, size: 0, type: "File", countElement: 0}],
         fields : [
           {
             key: 'isFavorites',
@@ -220,7 +225,6 @@ export default {
         getElements: "elements",
         getRootUid: "rootUid",
         getLoadingStatus: "getLoadingStatus",
-        rootUid: "rootUid",
         uidUser: "uidUser"
       }),
       Error(){
@@ -235,10 +239,10 @@ export default {
     },
     methods: {
       ...mapActions({ 
-        loadElements: "getElements", 
         loadingStatus: "getLoadingStatus",  
         createDir: "createDirectory",
-        elements: "getElements"
+        elements: "getElements",
+        //openDirectoryActions: "openDirectory"
       }),
       onClose() {
         this.popoverShow = false
@@ -259,18 +263,19 @@ export default {
         this.selection.push(item);
       },
       clearSelection(){
-        this.selection = [];
+        this.selection = [{uid: "", uidUsers: "", rootUid: "", date_create: "", date_update: "", name: "", isFavorite: false, size: 0, type: "File", countElement: 0}];
       },
       fileUpload(){
         this.file = this.$refs.file.files[0];
         let formData = new FormData();
         formData.append('file', this.file);
       },
-      async openDirectory(item){
+      openDirectory(item){
         if(item.type == 'Directory'){
-          alert(item.uid);
-          await this.loadElements(item.uid);
-          this.$router.push(`/v1/fm/${this.getRootUid}`);
+          this.clearSelection()
+          //this.openDirectoryActions(item.uid)
+          this.$router.push(`/v1/fm/${item.uid}`);
+          //this.elements(this.getRootUid);
         }
       },
       async createDirectory(){
@@ -311,8 +316,8 @@ export default {
         contextElement.style.display = 'none';
       }
     },
-    mounted() { 
-      this.elements(this.rootUid || this.uidUser); 
+    async mounted() { 
+      await this.elements(this.getRootUid || this.uidUser); 
     },
 }
 </script>

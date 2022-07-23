@@ -122,23 +122,32 @@
             }
         }
     }
- 
-    &_new-modal-fd{
-        min-height: 31.5vh;
-        width: 410px;
-        margin-left: 2.2rem;
-        .new-modal-fd{
+    &_empty{
+        display: flex;
+        min-height: 100%;
+        align-items: center;
+        justify-content: center;
+        .empty{
+            &block{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+            }
+        }
+    }
+
+    &_modal{
+        margin: auto;
+        width: 420px;
+        .modal{
             &_header{
                 border: none;
             }
             &_body{
-                padding-top: 0.6rem;
-                padding-left: 1.9rem !important;
-                padding-right: 1.9rem !important;
-                h5{
-                    color: #4c4c4c;
-                    margin-top: -15px !important;
-                }
+                min-height: 21.5vh;
+                margin-left: 2.2rem;
+                margin-right: 2.2rem;
             }
             &_input{
                 border: none;
@@ -166,9 +175,9 @@
                 background: -moz-linear-gradient(135deg, rgb(253, 253, 253) 73%, rgb(244, 244, 244));
                 background: linear-gradient(135deg, rgb(253, 253, 253) 73%, rgb(244, 244, 244));
                 color: #333333;
-                width: 5rem;
                 height: 2.3rem;
                 font-size: 1rem;
+                width: 5rem;
             }
             &_exit:hover{
                 transition: 0.3s all;
@@ -187,6 +196,7 @@
                 height: 2.3rem;
                 font-size: 1rem;
             }   
+            &_rename{ width: 10rem; }
             &_create:hover{
                 transition: 0.3s all;
                 background: -webkit-linear-gradient(180deg, rgb(59, 209, 171) 1%, rgb(34, 182, 132) 94%);
@@ -203,24 +213,33 @@
                 color: #ff333a;
             }
         }
-    }
+    } 
+    .rename-modal{ width: 620px !important; }
 
     &_info-modal{
         min-height: 33.5vh;
-        width: 1510px !important;
+        width: 610px !important;
         .info-modal{
+            font-size: 12px;
+            &_header{
+                border: none;
+                padding-bottom: 4px;
+            }
+            &_title{
+                color: #8f8f8f;
+                span{
+                    color: #333333;
+                }
+            }
             &_body{
-                display: flex !important;
+                
             }
-            &_left{
-                min-height: 33.5vh;
+            &_path{
+                border-radius: 12px;
+                border: 1px solid #eeeeee;
                 background-color: #fafafa;
-                flex: 4;
             }
-            &_right{
-                min-height: 33.5vh;
-                flex: 5;
-            }
+
         }
     }
 

@@ -6,6 +6,7 @@ import Login from '@/views/Login.vue'
 import Main from '@/views/main/Main.vue'
 import Recent from '@/views/main/Recent.vue'
 import Trash from '@/views/main/Trash.vue'
+import store from '@/store/index'
 
 Vue.use(VueRouter);
 
@@ -48,6 +49,11 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+    if(to.matched.some( record => record.name == "Main")){
+        store.dispatch('openDirectory',to.path.split('fm/')[1])
+        store.dispatch('getElements', to.path.split('fm/')[1])
+        next()
+    }
     if(to.matched.some(record => record.meta.requiresAuth)) {
         if(localStorage.getItem('token')) {
             next()

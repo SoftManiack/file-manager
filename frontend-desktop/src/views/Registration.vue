@@ -1,7 +1,7 @@
 <template>
   <b-container fluid>
     <b-row class="l-auth" align-h="center">
-      <b-col xl="3" lg="4" md="5" sm="7" xs="8" class="c-form">
+      <b-col xl="3" lg="4" md="5" sm="7" xs="8" cols="10" class="c-form">
         <div class="c-form_messange" :class="{'c-form_messange--error': Error, signUpError}">
           <p>{{ error }}</p>
         </div>
