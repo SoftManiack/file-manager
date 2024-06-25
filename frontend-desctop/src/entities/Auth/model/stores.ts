@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-
+import type { ILogin } from './types'
 
 export const useAuthStore = defineStore({
     id: "",
@@ -10,7 +10,10 @@ export const useAuthStore = defineStore({
         size: "",
     }),
     actions: {
-        
+        login( login: ILogin ){
+            console.log(login)
+            alert(login.login)
+        }
     },
     getters: {
         isAuth(): boolean {

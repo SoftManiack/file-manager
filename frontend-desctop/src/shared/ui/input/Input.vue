@@ -9,8 +9,8 @@
         name?: string
         isDisabled?: boolean
         placeholder?: string
-        inputType?: InputType
-        error?: Array
+        inputType?: InputTypes
+        error?: string
     }
     
     const props = defineProps<IInput>();
@@ -48,13 +48,13 @@
                 <slot name="rightIcon"></slot>
             </span>
         </div>
-        <TransitionGroup name="error">
+
             <small
                 class="input__error"
             >
                 {{ error }}
             </small>
-        </TransitionGroup>
+
     </div>
 </template>
 

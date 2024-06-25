@@ -1,20 +1,18 @@
 <script lang="ts" setup>
+
     import { ref, computed }  from 'vue'
     import { useVuelidate } from '@vuelidate/core'
     import { required } from '@vuelidate/validators'
+    import { useAuthStore } from '@/entities/Auth/model/stores'
 
     import { Input } from '@/shared/ui/input'
     import { Button } from '@/shared/ui/button'
     import { Typography } from '@/shared/ui/typography'
-    import { useRoute } from 'vue-router'
     
+    const auth = useAuthStore()
+
     const login = ref('')
     const password = ref('')
-
-    const eventForButton = () => {
-        console.log(login.value)
-        console.log(password.value)
-    }
     
     const validation = computed(() => ({
         login: {
@@ -24,12 +22,20 @@
 
     const v = useVuelidate(validation, { login })
 
+    const eventForButton = () => {
+        console.log(login.value)
+        console.log(password.value)
 
+        auth.login( {
+            login: login.value,
+            password: password.value
+        })
+    }
 </script>
 
 <template>
     <form class="login-from px-4">
-        {{v.login.$errors}}
+        {{v.login.$silentErrors}}
         <Typography :tagName="'h4'"> 
             Вход
         </Typography>
@@ -39,7 +45,7 @@
             label="Логин"
             name="name"
             placeholder="Введите логин"
-            :error="v.login.$errors"
+   
         />
         <Input 
             class="mt-4"
