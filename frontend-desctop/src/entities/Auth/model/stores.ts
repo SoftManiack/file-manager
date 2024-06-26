@@ -1,14 +1,13 @@
 import { defineStore } from 'pinia'
-import type { ILogin } from './types'
+import type { ILogin, IUser } from './types'
 
-export const useAuthStore = defineStore({
-    id: "",
-    state: () => ({
-        name: 'Sigismund',
-        password: "",
-        token: "",
-        size: "",
-    }),
+export const useAuthStore = defineStore('useAuthStore',{
+    state: () => {
+        return {
+            user: {} as IUser,
+            error: "" as string,
+        }
+    },
     actions: {
         login( login: ILogin ){
             console.log(login)
@@ -18,6 +17,12 @@ export const useAuthStore = defineStore({
     getters: {
         isAuth(): boolean {
             return (localStorage.getItem("token") != "")
+        },
+        getAuthUser(state){
+            return state.user
+        },
+        getAuthError(state){
+            return state.error
         }
     }
 

@@ -4,5 +4,7 @@ export type ILogin = {
 }
 
 export type IUser = {
-
+    login: string,
+    token: string,
+    size: number
 }

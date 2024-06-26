@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 
     import { ref, computed }  from 'vue'
+    import { storeToRefs } from 'pinia'
     import { useVuelidate } from '@vuelidate/core'
     import { required } from '@vuelidate/validators'
+
     import { useAuthStore } from '@/entities/Auth/model/stores'
 
     import { Input } from '@/shared/ui/input'
@@ -10,6 +12,7 @@
     import { Typography } from '@/shared/ui/typography'
     
     const auth = useAuthStore()
+    const { getAuthError } = storeToRefs(auth)
 
     const login = ref('')
     const password = ref('')
@@ -23,8 +26,6 @@
     const v = useVuelidate(validation, { login })
 
     const eventForButton = () => {
-        console.log(login.value)
-        console.log(password.value)
 
         auth.login( {
             login: login.value,
@@ -35,7 +36,6 @@
 
 <template>
     <form class="login-from px-4">
-        {{v.login.$silentErrors}}
         <Typography :tagName="'h4'"> 
             Вход
         </Typography>
@@ -55,7 +55,7 @@
             placeholder="Введите пароль"
         />
         <span class="login-from__error">
-
+            {{ getAuthError }}
         </span>
         <Button 
             class="mt-4"
