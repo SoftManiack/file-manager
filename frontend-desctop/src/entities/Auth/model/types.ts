@@ -1,10 +1,10 @@
 export type ILogin = {
-    login: string
+    email: string
     password: string
 }
 
 export type IUser = {
-    login: string,
+    email: string,
     token: string,
     size: number
 }

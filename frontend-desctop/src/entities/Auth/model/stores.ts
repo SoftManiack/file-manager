@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import type { ILogin, IUser } from './types'
+import authApi from '../api/auth'
 
 export const useAuthStore = defineStore('useAuthStore',{
     state: () => {
@@ -9,9 +10,12 @@ export const useAuthStore = defineStore('useAuthStore',{
         }
     },
     actions: {
-        login( login: ILogin ){
-            console.log(login)
-            alert(login.login)
+        async login( login: ILogin ){
+            
+            authApi.login(login)
+                .then(() => console.log('then'))
+                .catch(() => console.log(12))
+
         }
     },
     getters: {

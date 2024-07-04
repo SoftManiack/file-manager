@@ -6,15 +6,15 @@
     import { required } from '@vuelidate/validators'
 
     import { useAuthStore } from '@/entities/Auth/model/stores'
-
+    
     import { Input } from '@/shared/ui/input'
     import { Button } from '@/shared/ui/button'
     import { Typography } from '@/shared/ui/typography'
     
-    const auth = useAuthStore()
+    const auth = useAuthStore() 
     const { getAuthError } = storeToRefs(auth)
 
-    const login = ref('')
+    const email = ref('')
     const password = ref('')
     
     const validation = computed(() => ({
@@ -23,25 +23,27 @@
         }
     }))
 
-    const v = useVuelidate(validation, { login })
+    const v = useVuelidate(validation, { email })
 
     const eventForButton = () => {
 
         auth.login( {
-            login: login.value,
+            email: email.value,
             password: password.value
         })
     }
+
 </script>
 
 <template>
+
     <form class="login-from px-4">
         <Typography :tagName="'h4'"> 
             Вход
         </Typography>
         <Input 
             class="mt-4"
-            v-model:modelValue="login"
+            v-model:modelValue="email"
             label="Логин"
             name="name"
             placeholder="Введите логин"
