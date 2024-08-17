@@ -74,9 +74,15 @@ func (r *AuthPostgres) GetUser(email, password string) (user.User, error) {
 	query := fmt.Sprintf("SELECT uid FROM %s WHERE email=$1 AND password_hash=$2", usersTable)
 	err := r.db.Get(&user, query, email, password)
 
+	user.Email = email
+
+	fmt.Println(err)
 	if err != nil && err.Error() == "sql: no rows in result set" {
 		err = errors.New("неверная электронная почта или пароль")
 	}
+
+	fmt.Println("user")
+	fmt.Println(user)
 
 	return user, err
 }

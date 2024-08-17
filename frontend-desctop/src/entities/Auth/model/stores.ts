@@ -13,8 +13,8 @@ export const useAuthStore = defineStore('useAuthStore',{
         async login( login: ILogin ){
             
             authApi.login(login)
-                .then(() => console.log('then'))
-                .catch(() => console.log(12))
+                .then((data) => console.log(data))
+                .catch((err) => console.log(err))
 
         }
     },

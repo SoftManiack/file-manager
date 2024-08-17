@@ -3,16 +3,22 @@ import { type AxiosInstance } from 'axios'
 
 const instance: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
+  headers: {
+    "Cache-Control": "no-cache",
+    "Content-Type": "application/x-www-form-urlencoded",
+    "Access-Control-Allow-Origin": "*",
+    'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS'
+  },
 })
 
 instance.interceptors.request.use((config) => {
-
-  console.log('res interseptors')
+  
   if (localStorage.getItem("token")) {
     config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
   }
-  return config;
+  return config;  
 });
+
 
 instance.interceptors.response.use(
     (res) => res,
@@ -23,14 +29,14 @@ instance.interceptors.response.use(
           console.error(data);
         case 401:
           console.error('unauthorised');
-  
         case 404:
           console.error('/not-found');
-  
         case 500:
           console.error('/server-error');
       }
-      return error
+
+      
+      return Promise.reject(data)
     }
   );
 

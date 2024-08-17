@@ -48,13 +48,21 @@ func (h *Handler) SignIn(c *gin.Context) {
 	}
 
 	token, err := h.services.Authorization.GenerateToken(input.Email, input.Password)
-	if err != nil {
+
+	fmt.Println(token)
+
+	if err.Error() == "неверная электронная почта или пароль" {
+		newErrorResponse(c, 401, err.Error())
+		return
+	} else if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	uid, _ := h.services.ParseToken(token)
 	fmt.Println(token)
+
+	fmt.Println("err")
 
 	c.JSON(http.StatusOK, HttpResponse{
 		Message: "success",

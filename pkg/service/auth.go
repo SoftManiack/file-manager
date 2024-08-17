@@ -72,11 +72,9 @@ func (s *AuthService) DeleteUser(userUid string) error {
 func (s *AuthService) GenerateToken(email, password string) (string, error) {
 	user, err := s.repo.GetUser(email, generatePasswordHash(password))
 
-	fmt.Println("err services")
-	fmt.Println(err)
-	fmt.Println(user)
-
+	fmt.Println("err")
 	logrus.Errorln(err)
+
 	if err != nil {
 		return " ", err
 	}
