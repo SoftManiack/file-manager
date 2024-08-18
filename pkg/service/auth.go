@@ -72,10 +72,8 @@ func (s *AuthService) DeleteUser(userUid string) error {
 func (s *AuthService) GenerateToken(email, password string) (string, error) {
 	user, err := s.repo.GetUser(email, generatePasswordHash(password))
 
-	fmt.Println("err")
-	logrus.Errorln(err)
-
 	if err != nil {
+		logrus.Errorln(err)
 		return " ", err
 	}
 
@@ -91,6 +89,9 @@ func (s *AuthService) GenerateToken(email, password string) (string, error) {
 }
 
 func (s *AuthService) ParseToken(accessToken string) (string, error) {
+
+	fmt.Println("parse token")
+
 	token, err := jwt.ParseWithClaims(accessToken, &tokenClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("invalid signing method")

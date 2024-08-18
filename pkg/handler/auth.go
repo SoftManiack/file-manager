@@ -49,20 +49,20 @@ func (h *Handler) SignIn(c *gin.Context) {
 
 	token, err := h.services.Authorization.GenerateToken(input.Email, input.Password)
 
-	fmt.Println(token)
-
-	if err.Error() == "неверная электронная почта или пароль" {
-		newErrorResponse(c, 401, err.Error())
+	if err != nil && err.Error() == "неверная электронная почта или пароль" {
+		newErrorResponse(c, 400, err.Error())
 		return
 	} else if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	uid, _ := h.services.ParseToken(token)
-	fmt.Println(token)
+	uid, err := h.services.Authorization.ParseToken(token)
 
-	fmt.Println("err")
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
 
 	c.JSON(http.StatusOK, HttpResponse{
 		Message: "success",

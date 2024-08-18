@@ -7,7 +7,6 @@ const instance: AxiosInstance = axios.create({
     "Cache-Control": "no-cache",
     "Content-Type": "application/x-www-form-urlencoded",
     "Access-Control-Allow-Origin": "*",
-    'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS'
   },
 })
 
@@ -18,7 +17,6 @@ instance.interceptors.request.use((config) => {
   }
   return config;  
 });
-
 
 instance.interceptors.response.use(
     (res) => res,
