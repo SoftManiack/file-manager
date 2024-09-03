@@ -2,10 +2,9 @@
     
 </script>
 
-
 <template>
     <div>
-        Login 1211
+        Main
     </div>
 </template>
 

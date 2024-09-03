@@ -38,7 +38,41 @@ CREATE TABLE files
     is_link BOOLEAN NOT NULL DEFAULT FALSE,
     is_favorites BOOLEAN NOT NULL DEFAULT FALSE,
     type VARCHAR(8) NOT NULL DEFAULT 'default',
-    size BIGINT NOT NULL DEFAULT 0
+    size BIGINT NOT NULL DEFAULT 0,
+    data BYTEA DEFAULT '\000'
+);
+
+CREATE TABLE trash
+(
+    uid UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+    users_uid UUID REFERENCES users(uid) ON DELETE CASCADE NOT NULL
+);
+
+CREATE TABLE trash_direcories
+(
+    uid UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+    trash_uid UUID REFERENCES trash(uid) ON DELETE CASCADE NOT NULL,
+    directories_uid UUID REFERENCES directories(uid) ON DELETE CASCADE NOT NULL
+);
+
+CREATE TABLE trash_files
+(
+    uid UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+    trash_uid UUID REFERENCES trash(uid) ON DELETE CASCADE NOT NULL,
+    files_uid UUID REFERENCES files(uid) ON DELETE CASCADE NOT NULL
+);
+
+CREATE TABLE recents
+(
+    uid UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+    users_uid UUID REFERENCES users(uid) ON DELETE CASCADE NOT NULL
+);
+
+CREATE TABLE recents_file
+(
+    uid UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+    recents_uid UUID REFERENCES recents(uid) ON DELETE CASCADE NOT NULL,
+    files_uid UUID REFERENCES files(uid) ON DELETE CASCADE NOT NULL
 );
 
 
@@ -52,6 +86,15 @@ CREATE TABLE files
 
     DROP TABLE IF EXISTS directories CASCADE;
 
+    DROP TABLE IF EXISTS trash CASCADE;
+
+    DROP TABLE IF EXISTS trash_direcories CASCADE;
+
+    DROP TABLE IF EXISTS trash_files CASCADE;
+
+    DROP TABLE IF EXISTS recents CASCADE;
+
+    DROP TABLE IF EXISTS recents_file CASCADE;
 
 -- +goose StatementEnd
 

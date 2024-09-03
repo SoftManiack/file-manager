@@ -14,15 +14,11 @@ func NewFilesService(repo repository.Files) *FilesService {
 	return &FilesService{repo: repo}
 }
 
-func (s *FilesService) UploadFile(rootUid, name string, size int64) (files.File, error) {
+func (s *FilesService) UploadFile(rootUid string, newFile files.NewFile) (files.File, error) {
 
-	var newFile files.File
+	fmt.Println(newFile)
 
-	fmt.Println(rootUid)
-	fmt.Println(name)
-	fmt.Println(size)
-
-	return newFile, nil
+	return files.File{}, nil
 }
 
 /* func (s *FilesService) CreateTextFile(uid string, input files.NewTextFile) (files.TextFile, error) {

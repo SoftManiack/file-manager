@@ -3,6 +3,7 @@ package handler
 import (
 	files "file-manager/dto"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"strings"
@@ -44,7 +45,8 @@ func (h *Handler) UpdateFile(c *gin.Context) {
 
 func (h *Handler) UploadFile(c *gin.Context) {
 
-	var newFile files.File
+	var newFile files.NewFile
+	//var saveFile files.File
 	var path string
 	var extension string
 
@@ -63,18 +65,24 @@ func (h *Handler) UploadFile(c *gin.Context) {
 		path = os.Getenv("PATH_FILES") + "/" + userUid + "/" + rootDir + "/"
 	}
 
-	if extension == "jpg" || extension == "png" || extension == "jpeg" {
+	newFile.Size = int64(file.Size)
+	newFile.Name = file.Filename
+	newFile.Path = path
+	newFile.RootUid = rootDir
+	newFile.Data = []byte{}
 
-	} else {
-		newFile, err = h.services.UploadFile(rootDir, file.Filename, int64(file.Size))
+	if extension == "jpg" || extension == "png" || extension == "jpeg" || extension == "txt" {
+		form, _ := c.MultipartForm()
+		fileReader, _ := form.File["file"][0].Open()
+		newFile.Data, _ = io.ReadAll(fileReader)
 	}
 
-	c.SaveUploadedFile(file, path+file.Filename)
+	fmt.Println(newFile)
+	//saveFile, err = h.services.UploadFile(rootDir, newFile)
 
-	fmt.Println(rootDir)
-	fmt.Println(file.Filename)
-	fmt.Println(path)
-	fmt.Println(extension)
+	if err == nil {
+		c.SaveUploadedFile(file, path+file.Filename)
+	}
 
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -83,7 +91,7 @@ func (h *Handler) UploadFile(c *gin.Context) {
 
 	c.JSON(http.StatusOK, HttpResponse{
 		Message: "success",
-		Data:    newFile,
+		Data:    newFile.Data,
 	})
 }
 

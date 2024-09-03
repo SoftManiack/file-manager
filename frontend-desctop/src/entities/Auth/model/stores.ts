@@ -12,10 +12,15 @@ export const useAuthStore = defineStore('useAuthStore',{
     actions: {
         async login( login: ILogin ){
             
+            console.log(login)
             authApi.login(login)
-                .then((data) => console.log(data))
-                .catch((err) => console.log(err))
-
+                .then((data) => {
+                    this.user = data.data
+                    console.log(this.user)
+                })
+                .catch((err) => {
+                    this.error = err
+                })
         }
     },
     getters: {

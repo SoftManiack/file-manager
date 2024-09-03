@@ -1,21 +1,11 @@
 package dto
 
-type NewDefaultFile struct {
-	RootUid   string `json:"rootUid"`
-	Name      string `json:"name"`
-	Extension string `json:"extension"`
-}
-
-type NewTextFile struct {
-	RootUid string `json:"rootUid"`
-	Name    string `json:"name"`
-	Text    string `json:"text"`
-}
-
-type NewImageFile struct {
-	RootUid string `json:"rootUid"`
-	Name    string `json:"name"`
-	Data    []byte `json:"data"`
+type NewFile struct {
+	Name    string
+	Path    string
+	Size    int64
+	Data    []byte
+	RootUid string
 }
 
 type UpdateFile struct {

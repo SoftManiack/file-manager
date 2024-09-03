@@ -24,10 +24,8 @@ type Directories interface {
 }
 
 type Files interface {
-	CreateFile(uid string, input files.NewDefaultFile) (files.File, error)
+	CreateFile(uid string, input files.NewFile) (files.File, error)
 	UpdateFile(input files.UpdateFile) (files.File, error)
-	CreateImageFile(input files.NewImageFile) (files.File, error)
-	UpdateImageFile(input files.UpdateFile) (files.File, error)
 	DeleteFile(uidFile string) error
 	CopyFile(uidFile, uidTargetRoot string) error
 	MoveFile(uidFile, uidTargetRoot string) error

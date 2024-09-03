@@ -16,22 +16,12 @@ func NewFilesPostgres(db *sqlx.DB) *FilesPostgres {
 	return &FilesPostgres{db: db}
 }
 
-func (r *FilesPostgres) CreateFile(uid string, input files.NewDefaultFile) (files.File, error) {
+func (r *FilesPostgres) CreateFile(uid string, input files.NewFile) (files.File, error) {
 
 	return files.File{}, nil
 }
 
 func (r *FilesPostgres) UpdateFile(input files.UpdateFile) (files.File, error) {
-
-	return files.File{}, nil
-}
-
-func (r *FilesPostgres) CreateImageFile(input files.NewImageFile) (files.File, error) {
-
-	return files.File{}, nil
-}
-
-func (r *FilesPostgres) UpdateImageFile(input files.UpdateFile) (files.File, error) {
 
 	return files.File{}, nil
 }

@@ -47,6 +47,8 @@ func (h *Handler) SignIn(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(input)
+
 	token, err := h.services.Authorization.GenerateToken(input.Email, input.Password)
 
 	if err != nil && err.Error() == "неверная электронная почта или пароль" {
