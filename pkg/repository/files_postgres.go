@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
+	"github.com/sirupsen/logrus"
 )
 
 type FilesPostgres struct {
@@ -16,9 +17,36 @@ func NewFilesPostgres(db *sqlx.DB) *FilesPostgres {
 	return &FilesPostgres{db: db}
 }
 
-func (r *FilesPostgres) CreateFile(uid string, input files.NewFile) (files.File, error) {
+func (r *FilesPostgres) CreateFile(fileNew files.NewFile) (files.File, error) {
 
-	return files.File{}, nil
+	var file files.File
+	var uidFile string
+
+	tx, err := r.db.Begin()
+
+	if err != nil {
+		logrus.Errorln(err)
+		return files.File{}, err
+	}
+
+	queryCreateFile := fmt.Sprintf("INSERT INTO %s ( root_uid, name, path, size, data ) VALUES ($1, $2, $3, $4, $5) RETURNING uid", filesTable)
+	queryGetNewFile := fmt.Sprintf("SELECT * FROM %s WHERE uid = $1", filesTable)
+
+	row := r.db.QueryRow(queryCreateFile, fileNew.RootUid, fileNew.Name, fileNew.Path, fileNew.Size, fileNew.Data)
+
+	if err := row.Scan(&uidFile); err != nil {
+		tx.Rollback()
+		return file, err
+	}
+
+	fmt.Println(uidFile)
+
+	if err := r.db.Get(&file, queryGetNewFile, uidFile); err != nil {
+		tx.Rollback()
+		return file, err
+	}
+
+	return file, tx.Commit()
 }
 
 func (r *FilesPostgres) UpdateFile(input files.UpdateFile) (files.File, error) {

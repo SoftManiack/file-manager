@@ -24,7 +24,7 @@ func (r *DirectoriesPostgres) GetDirectory(uidDir string) ([]dto.Directories, []
 	var directoriesFiles []dto.File
 
 	queryGetDirectories := fmt.Sprintf("SELECT * FROM %s WHERE root_uid = $1 AND root_uid <> uid AND is_delete <> true", directoriesTable)
-	queryGetDefaultFiles := fmt.Sprintf("SELECT * FROM %s WHERE root_uid = $1 AND is_delete <> true", defaultFilesTable)
+	queryGetDefaultFiles := fmt.Sprintf("SELECT * FROM %s WHERE root_uid = $1 AND is_delete <> true", filesTable)
 
 	err := r.db.Select(&directories, queryGetDirectories, uidDir)
 

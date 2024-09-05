@@ -23,7 +23,7 @@ type Directories interface {
 }
 
 type Files interface {
-	UploadFile(rootUid string, newFile files.NewFile) (files.File, error)
+	UploadFile(newFile files.NewFile) (files.File, error)
 }
 
 type Service struct {

@@ -8,10 +8,9 @@ import (
 )
 
 const (
-	usersTable        = "users"
-	directoriesTable  = "directories"
-	defaultFilesTable = "default_files"
-	imageFilesTable   = "image_files"
+	usersTable       = "users"
+	directoriesTable = "directories"
+	filesTable       = "files"
 )
 
 type Config struct {

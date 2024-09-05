@@ -2,7 +2,6 @@ package handler
 
 import (
 	files "file-manager/dto"
-	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -77,8 +76,7 @@ func (h *Handler) UploadFile(c *gin.Context) {
 		newFile.Data, _ = io.ReadAll(fileReader)
 	}
 
-	fmt.Println(newFile)
-	//saveFile, err = h.services.UploadFile(rootDir, newFile)
+	saveFile, err := h.services.UploadFile(newFile)
 
 	if err == nil {
 		c.SaveUploadedFile(file, path+file.Filename)
@@ -91,7 +89,7 @@ func (h *Handler) UploadFile(c *gin.Context) {
 
 	c.JSON(http.StatusOK, HttpResponse{
 		Message: "success",
-		Data:    newFile.Data,
+		Data:    saveFile,
 	})
 }
 
