@@ -3,7 +3,6 @@ package service
 import (
 	files "file-manager/dto"
 	"file-manager/pkg/repository"
-	"fmt"
 )
 
 type FilesService struct {
@@ -24,7 +23,17 @@ func (s *FilesService) UploadFile(newFile files.NewFile) (files.File, error) {
 		return file, err
 	}
 
-	fmt.Println(newFile)
+	return file, nil
+}
+
+func (s *FilesService) UpdateFile(updateFile files.UpdateFile) (files.File, error) {
+	var file files.File
+
+	file, err := s.repo.UpdateFile(updateFile)
+
+	if err != nil {
+		return file, err
+	}
 
 	return file, nil
 }

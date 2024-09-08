@@ -2,7 +2,9 @@ package handler
 
 import (
 	files "file-manager/dto"
+	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
@@ -40,6 +42,26 @@ func (h *Handler) CreateFile(c *gin.Context) {
 
 func (h *Handler) UpdateFile(c *gin.Context) {
 
+	var input files.UpdateFile
+
+	fmt.Println(input)
+
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	file, err := h.services.UpdateFile(input)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, HttpResponse{
+		Message: "success",
+		Data:    file,
+	})
 }
 
 func (h *Handler) UploadFile(c *gin.Context) {
@@ -69,6 +91,20 @@ func (h *Handler) UploadFile(c *gin.Context) {
 	newFile.Path = path
 	newFile.RootUid = rootDir
 	newFile.Data = []byte{}
+
+	// проверить нет ли файла с таким именем
+
+	filesDir, err := ioutil.ReadDir(path)
+	if err != nil {
+		return
+	}
+
+	for _, file := range filesDir {
+		if file.Name() == newFile.Name && file.IsDir() == false {
+			newErrorResponse(c, http.StatusBadRequest, "Файл с таким именем существует")
+			return
+		}
+	}
 
 	if extension == "jpg" || extension == "png" || extension == "jpeg" || extension == "txt" {
 		form, _ := c.MultipartForm()

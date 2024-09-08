@@ -39,8 +39,6 @@ func (r *FilesPostgres) CreateFile(fileNew files.NewFile) (files.File, error) {
 		return file, err
 	}
 
-	fmt.Println(uidFile)
-
 	if err := r.db.Get(&file, queryGetNewFile, uidFile); err != nil {
 		tx.Rollback()
 		return file, err
@@ -51,7 +49,26 @@ func (r *FilesPostgres) CreateFile(fileNew files.NewFile) (files.File, error) {
 
 func (r *FilesPostgres) UpdateFile(input files.UpdateFile) (files.File, error) {
 
-	return files.File{}, nil
+	var file files.File
+
+	tx, err := r.db.Begin()
+
+	queryUpdateFile := fmt.Sprintf("UPDATE %s SET name = $1, is_favorites = $2 WHERE uid = $3", filesTable)
+	queryGetNewFile := fmt.Sprintf("SELECT * FROM %s WHERE uid = $1", filesTable)
+
+	_, err = r.db.Exec(queryUpdateFile, input.Name, input.IsFavorites, input.Uid)
+
+	if err != nil {
+		tx.Rollback()
+		return file, err
+	}
+
+	if err := r.db.Get(&file, queryGetNewFile, input.Uid); err != nil {
+		tx.Rollback()
+		return file, err
+	}
+
+	return file, tx.Commit()
 }
 
 func (r *FilesPostgres) DeleteFile(uidFile string) error {

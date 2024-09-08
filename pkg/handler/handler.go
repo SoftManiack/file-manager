@@ -47,7 +47,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 		files := fm.Group("/files")
 		{
-			files.POST("/add", h.UpdateFile)
+			files.PATCH("/", h.UpdateFile)
 		}
 	}
 

@@ -24,6 +24,7 @@ type Directories interface {
 
 type Files interface {
 	UploadFile(newFile files.NewFile) (files.File, error)
+	UpdateFile(updateFIle files.UpdateFile) (files.File, error)
 }
 
 type Service struct {
