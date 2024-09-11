@@ -32,3 +32,8 @@ type Directories struct {
 	CountElement int64  `json:"countElement" db:"count_element"`
 	Type         string `json:"type" db:"type"`
 }
+
+type DirectoriesTree struct {
+	Directories []Directories
+	File        []File
+}

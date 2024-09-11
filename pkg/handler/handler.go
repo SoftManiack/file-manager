@@ -43,13 +43,34 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			directories.POST("/add", h.CreateDirectories)
 			directories.PATCH("/", h.UpdateDirectories)
 			directories.POST("/:uid/upload", h.UploadFile)
+			directories.GET("/download", h.DownloadDirectory)
 		}
 
 		files := fm.Group("/files")
 		{
 			files.PATCH("/", h.UpdateFile)
+			files.GET("/download", h.DownloadFile)
+
 		}
 	}
 
 	return router
 }
+
+// 1) Скачивание файла #
+// 2) Скачивание директории
+// 3) Удаление файла
+// 4) Удаление директории
+// 5) Вывод корзины
+// 6) Перемещение файла
+// 7) Перемещение диреткории
+// 8) Копирование файла
+// 9) Копирование директории
+// 10) Недавние файлы
+// 11) Ссылка на файл
+// 12) Сылка на диреткорию
+// 13) В контейнер
+// 14) Базу разворачиваем на сервере
+// 15) ci-cd github
+// 16) созд тектс файл
+// 17) Редактировать текст файл

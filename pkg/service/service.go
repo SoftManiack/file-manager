@@ -20,6 +20,7 @@ type Directories interface {
 	GetDirectory(uid string) ([]directories.Directories, []files.File, error)
 	CreateDirectory(uid string, input directories.NewDirectory) (directories.Directories, error)
 	UpdateDirectory(input directories.UpdateDirectory) (directories.Directories, error)
+	DownloadDirectory(uid string) error
 }
 
 type Files interface {

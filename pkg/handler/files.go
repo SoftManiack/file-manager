@@ -2,7 +2,6 @@ package handler
 
 import (
 	files "file-manager/dto"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -12,39 +11,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (h *Handler) CreateFile(c *gin.Context) {
-
-	/* var input files.NewTextFile
-	userUid, err := getUserUid(c)
-
-	if err != nil {
-		return
-	}
-
-	if err := c.BindJSON(&input); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
-		return
-	}
-
-	file, err := h.services.CreateTextFile(userUid, input)
-
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	c.JSON(http.StatusOK, HttpResponse{
-		Message: "success",
-		Data:    file,
-	}) */
-
-}
-
 func (h *Handler) UpdateFile(c *gin.Context) {
 
 	var input files.UpdateFile
-
-	fmt.Println(input)
 
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -74,6 +43,7 @@ func (h *Handler) UploadFile(c *gin.Context) {
 	rootDir := c.Param("uid")
 	file, _ := c.FormFile("file")
 	userUid, err := getUserUid(c)
+
 	extension = strings.Split(file.Filename, ".")[1]
 
 	if err != nil {
@@ -131,6 +101,32 @@ func (h *Handler) UploadFile(c *gin.Context) {
 
 func (h *Handler) DownloadFile(c *gin.Context) {
 
+	var input files.DownloadFile
+	var path string
+
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	userUid, err := getUserUid(c)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if input.UidRoot == userUid {
+		path = os.Getenv("PATH_FILES") + "/" + userUid + "/" + input.Name
+	} else {
+		path = os.Getenv("PATH_FILES") + "/" + userUid + "/" + input.UidRoot + "/" + input.Name
+	}
+
+	c.Header("Content-Description", "File Transfer")
+	c.Header("Content-Transfer-Encoding", "binary")
+	c.Header("Content-Disposition", "attachment; filename="+input.Name)
+	c.Header("Content-Type", "application/octet-stream")
+	c.File(path)
 }
 
 // Создать текст файл вирнуть из директории

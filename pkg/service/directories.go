@@ -72,3 +72,21 @@ func (s *DirectoriesService) UpdateDirectory(input directories.UpdateDirectory) 
 
 	return directory, nil
 }
+
+func (s *DirectoriesService) DownloadDirectory(uid string) error {
+
+	return nil
+}
+
+/*
+
+func (s *DirectoriesService) setTreeDownloadDir(uid string) (directories.DirectoriesTree, error) {
+
+	getDrectories, getFiles, err := s.repo.GetDirectory(uid)
+
+	for _, dir := range getDrectories {
+
+	}
+
+}
+*/

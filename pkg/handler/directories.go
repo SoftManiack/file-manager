@@ -82,6 +82,29 @@ func (h *Handler) UpdateDirectories(c *gin.Context) {
 
 }
 
+func (h *Handler) DownloadDirectory(c *gin.Context) {
+
+	// найти в базе все id на файлы и папки
+
+	//
+
+	// построить граф
+	// создать временую папку
+	// переместтиь в нее все файлы и папки
+	// сжать
+	// скачать
+	// удалить
+
+	uid := c.Param("uid")
+
+	err := h.services.DownloadDirectory(uid)
+
+	if err != nil {
+		return
+	}
+
+}
+
 func (h *Handler) DeleteDirectories(c *gin.Context) {
 
 }
