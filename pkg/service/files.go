@@ -38,6 +38,13 @@ func (s *FilesService) UpdateFile(updateFile files.UpdateFile) (files.File, erro
 	return file, nil
 }
 
+func (s *FilesService) DeleteFile(uidFile string) error {
+
+	// записать в базу
+
+	return nil
+}
+
 /* func (s *FilesService) CreateTextFile(uid string, input files.NewTextFile) (files.TextFile, error) {
 
 }

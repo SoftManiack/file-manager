@@ -71,11 +71,6 @@ func (r *FilesPostgres) UpdateFile(input files.UpdateFile) (files.File, error) {
 	return file, tx.Commit()
 }
 
-func (r *FilesPostgres) DeleteFile(uidFile string) error {
-
-	return nil
-}
-
 func (r *FilesPostgres) CopyFile(uidFile, uidTargetRoot string) error {
 
 	return nil

@@ -41,6 +41,7 @@ func (r *AuthPostgres) CreateUser(user user.User) (string, error) {
 	queryGetEmail := fmt.Sprintf("SELECT uid FROM %s WHERE email = $1", usersTable)
 	queryCreateUser := fmt.Sprintf("INSERT INTO %s ( email, name, password_hash) values ($1, $2, $3) RETURNING uid", usersTable)
 	queryRoot := fmt.Sprintf("INSERT INTO %s ( uid, users_uid, root_uid, name, is_favorites, count_element, path ) VALUES ($1, $2, $3, $4, $5, $6, $7)", directoriesTable)
+	queryCreateTrash := fmt.Sprintf("INSERT INTO %s ( users_uid ) VALUES ($1)", trashTable)
 
 	if err := r.db.Get(&uid, queryGetEmail, user.Email); err != nil {
 		row := r.db.QueryRow(queryCreateUser, user.Email, user.Name, user.Password)
@@ -62,6 +63,16 @@ func (r *AuthPostgres) CreateUser(user user.User) (string, error) {
 		tx.Rollback()
 		logrus.Errorln(err)
 		return "", errors.New("такой email уже существет")
+	}
+
+	// создать корзину
+
+	_, err = r.db.Exec(queryCreateTrash, uid)
+
+	if err != nil {
+		tx.Rollback()
+		logrus.Errorln(err)
+		return "", err
 	}
 
 	return uid, tx.Commit()

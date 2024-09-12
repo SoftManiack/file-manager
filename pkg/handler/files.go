@@ -129,6 +129,22 @@ func (h *Handler) DownloadFile(c *gin.Context) {
 	c.File(path)
 }
 
+func (h *Handler) DeleteFile(c *gin.Context) {
+
+	uidFile := c.Param("uid")
+
+	err := h.services.DeleteFile(uidFile)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, HttpResponse{
+		Message: "success",
+	})
+}
+
 // Создать текст файл вирнуть из директории
 // Изменить текстовый файл
 //

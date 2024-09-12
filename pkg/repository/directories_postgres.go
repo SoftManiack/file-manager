@@ -137,11 +137,6 @@ func (r *DirectoriesPostgres) UpdateDirectory(input directories.UpdateDirectory)
 	return directory, nil
 }
 
-func (r *DirectoriesPostgres) DeleteDirectory(uidDir string) error {
-
-	return nil
-}
-
 func (r *DirectoriesPostgres) CopyDirectory(uidDir, uidTargetRoot string) error {
 
 	return nil

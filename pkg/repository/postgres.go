@@ -8,9 +8,12 @@ import (
 )
 
 const (
-	usersTable       = "users"
-	directoriesTable = "directories"
-	filesTable       = "files"
+	usersTable           = "users"
+	directoriesTable     = "directories"
+	filesTable           = "files"
+	trashTable           = "trash"
+	trashDirecoriesTable = "trash_direcories"
+	trashFilesTable      = "trash_files"
 )
 
 type Config struct {
