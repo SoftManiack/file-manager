@@ -38,7 +38,7 @@ func (s *FilesService) UpdateFile(updateFile files.UpdateFile) (files.File, erro
 	return file, nil
 }
 
-func (s *FilesService) DeleteFile(uidFile string) error {
+func (s *FilesService) MoveTrashFile(uidUser, uidFile string) error {
 
 	// записать в базу
 

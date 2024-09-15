@@ -8,6 +8,18 @@ type NewFile struct {
 	RootUid string
 }
 
+type NewTextFile struct {
+	RootUid string `json:"rootUid"`
+	Name    string `json:"name"`
+	Text    string `json:"text"`
+}
+
+type NewTableFile struct {
+	RootUid string `json:"rootUid"`
+	Name    string `json:"name"`
+	Rows    string `json:"rows"`
+}
+
 type UpdateFile struct {
 	Uid         string `json:"uid"`
 	Name        string `json:"name"`

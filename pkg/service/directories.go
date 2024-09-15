@@ -78,6 +78,11 @@ func (s *DirectoriesService) DownloadDirectory(uid string) error {
 	return nil
 }
 
+func (s *DirectoriesService) RemoveTrashDirectory(uid string) error {
+
+	return nil
+}
+
 /*
 
 func (s *DirectoriesService) setTreeDownloadDir(uid string) (directories.DirectoriesTree, error) {

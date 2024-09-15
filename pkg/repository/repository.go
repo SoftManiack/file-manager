@@ -30,8 +30,13 @@ type Files interface {
 }
 
 type Trash interface {
-	DeleteFile(uidFile string) error
-	DeleteDirectory(uidDir string) error
+	MoveTrashDirectory(uidUser, uidDir string) error
+	MoveTrashFile(uidUser, uidFile string) error
+	RemoveTrashDirectory(uid string) error
+	RemoveTrashFile(uid string) error
+	DeleteTrashFile(uid string) error
+	DeleteTrashDirectory(uid string) error
+	GetTrash() ([]directories.Directories, []files.File, error)
 }
 
 type Repository struct {

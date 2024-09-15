@@ -21,12 +21,16 @@ type Directories interface {
 	CreateDirectory(uid string, input directories.NewDirectory) (directories.Directories, error)
 	UpdateDirectory(input directories.UpdateDirectory) (directories.Directories, error)
 	DownloadDirectory(uid string) error
+	RemoveTrashDirectory(uid string) error
 }
 
 type Files interface {
 	UploadFile(newFile files.NewFile) (files.File, error)
 	UpdateFile(updateFIle files.UpdateFile) (files.File, error)
-	DeleteFile(uidFile string) error
+	MoveTrashFile(uidUser, uidFile string) error
+}
+
+type Trash interface {
 }
 
 type Service struct {
