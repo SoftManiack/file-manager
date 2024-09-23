@@ -105,6 +105,6 @@ func (h *Handler) DownloadDirectory(c *gin.Context) {
 
 }
 
-func (h *Handler) DeleteDirectories(c *gin.Context) {
+func (h *Handler) MoveTrashDirectory(c *gin.Context) {
 
 }

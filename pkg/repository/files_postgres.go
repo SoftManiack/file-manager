@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	directories "file-manager/dto"
 	files "file-manager/dto"
 	"fmt"
@@ -17,10 +18,11 @@ func NewFilesPostgres(db *sqlx.DB) *FilesPostgres {
 	return &FilesPostgres{db: db}
 }
 
-func (r *FilesPostgres) CreateFile(fileNew files.NewFile) (files.File, error) {
+func (r *FilesPostgres) CreateFile(newFile files.NewFile) (files.File, error) {
 
 	var file files.File
 	var uidFile string
+	var names []string
 
 	tx, err := r.db.Begin()
 
@@ -29,10 +31,22 @@ func (r *FilesPostgres) CreateFile(fileNew files.NewFile) (files.File, error) {
 		return files.File{}, err
 	}
 
+	queryGetFilesNameFromDir := fmt.Sprintf("SELECT name FROM %s WHERE root_uid = $1", filesTable)
 	queryCreateFile := fmt.Sprintf("INSERT INTO %s ( root_uid, name, path, size, data ) VALUES ($1, $2, $3, $4, $5) RETURNING uid", filesTable)
 	queryGetNewFile := fmt.Sprintf("SELECT * FROM %s WHERE uid = $1", filesTable)
 
-	row := r.db.QueryRow(queryCreateFile, fileNew.RootUid, fileNew.Name, fileNew.Path, fileNew.Size, fileNew.Data)
+	fmt.Println(queryGetFilesNameFromDir)
+	if err := r.db.Select(&names, queryGetFilesNameFromDir, newFile.RootUid); err != nil {
+		tx.Rollback()
+		return file, err
+	}
+
+	if len(names) > 0 {
+		tx.Rollback()
+		return file, errors.New("такое имя уже существует")
+	}
+
+	row := r.db.QueryRow(queryCreateFile, newFile.RootUid, newFile.Name, newFile.Path, newFile.Size, newFile.Data)
 
 	if err := row.Scan(&uidFile); err != nil {
 		tx.Rollback()

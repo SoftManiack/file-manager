@@ -44,6 +44,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			directories.PATCH("/", h.UpdateDirectories)
 			directories.POST("/:uid/upload", h.UploadFile)
 			directories.GET("/download", h.DownloadDirectory)
+			directories.DELETE("/", h.MoveTrashDirectory)
 		}
 
 		files := fm.Group("/files")

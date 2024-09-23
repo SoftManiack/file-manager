@@ -83,7 +83,7 @@ func (h *Handler) UploadFile(c *gin.Context) {
 		newFile.Data, _ = io.ReadAll(fileReader)
 	}
 
-	saveFile, err := h.services.UploadFile(newFile)
+	saveFile, err := h.services.CreateFile(newFile)
 
 	if err == nil {
 		c.SaveUploadedFile(file, path+file.Filename)
@@ -161,7 +161,11 @@ func (h *Handler) CreateTextFile(c *gin.Context) {
 	//var saveFile files.File
 	var path string
 
-	rootDir := c.Param("uid")
+	if input.Name != "" {
+		newErrorResponse(c, http.StatusBadRequest, "имя не должно быть пустым")
+		return
+	}
+
 	userUid, err := getUserUid(c)
 
 	if err != nil {
@@ -177,17 +181,17 @@ func (h *Handler) CreateTextFile(c *gin.Context) {
 		return
 	}
 
-	if rootDir == userUid {
-		path = os.Getenv("PATH_FILES") + "/" + rootDir
+	if input.RootUid == userUid {
+		path = os.Getenv("PATH_FILES") + "/" + input.RootUid
 	} else {
-		path = os.Getenv("PATH_FILES") + "/" + userUid + "/" + rootDir + "/"
+		path = os.Getenv("PATH_FILES") + "/" + userUid + "/" + input.RootUid
 	}
 
 	newFile.Size = 0
 	newFile.Name = input.Name
 	newFile.Path = path
-	newFile.RootUid = rootDir
-	newFile.Data = []byte{}
+	newFile.RootUid = input.RootUid
+	newFile.Data = []byte(input.Text)
 
 	fmt.Println(newFile)
 
@@ -203,12 +207,14 @@ func (h *Handler) CreateTextFile(c *gin.Context) {
 		}
 	}
 
-	saveFile, err := h.services.UploadFile(newFile)
+	saveFile, err := h.services.CreateFile(newFile)
 
 	// создать текстовый файл
 
+	fmt.Println(path + input.Name + ".txt")
+
 	if err == nil {
-		file, err := os.Create(path + input.Name)
+		file, err := os.Create(path + "/" + input.Name + ".txt")
 
 		if err != nil {
 			newErrorResponse(c, http.StatusInternalServerError, err.Error())

@@ -13,7 +13,7 @@ func NewFilesService(repo repository.Files) *FilesService {
 	return &FilesService{repo: repo}
 }
 
-func (s *FilesService) UploadFile(newFile files.NewFile) (files.File, error) {
+func (s *FilesService) CreateFile(newFile files.NewFile) (files.File, error) {
 
 	var file files.File
 
