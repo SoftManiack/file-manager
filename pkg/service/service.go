@@ -43,6 +43,6 @@ func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
 		Directories:   NewDirectoriesService(repos.Directories),
-		Files:         NewFilesService(repos.Files),
+		Files:         NewFilesService(repos.Files, repos.Trash),
 	}
 }

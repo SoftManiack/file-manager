@@ -3,14 +3,16 @@ package service
 import (
 	files "file-manager/dto"
 	"file-manager/pkg/repository"
+	"fmt"
 )
 
 type FilesService struct {
-	repo repository.Files
+	repo  repository.Files
+	trash repository.Trash
 }
 
-func NewFilesService(repo repository.Files) *FilesService {
-	return &FilesService{repo: repo}
+func NewFilesService(repo repository.Files, trash repository.Trash) *FilesService {
+	return &FilesService{repo: repo, trash: trash}
 }
 
 func (s *FilesService) CreateFile(newFile files.NewFile) (files.File, error) {
@@ -41,6 +43,15 @@ func (s *FilesService) UpdateFile(updateFile files.UpdateFile) (files.File, erro
 func (s *FilesService) MoveTrashFile(uidUser, uidFile string) error {
 
 	// записать в базу
+
+	fmt.Println(uidUser)
+	fmt.Println(uidFile)
+
+	err := s.trash.MoveTrashFile(uidUser, uidFile)
+
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

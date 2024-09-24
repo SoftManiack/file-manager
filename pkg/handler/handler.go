@@ -52,7 +52,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			files.GET("/download", h.DownloadFile)
 			files.POST("/text/add", h.CreateTextFile)
 			files.PATCH("/", h.UpdateFile)
-			files.DELETE("/", h.MoveTrashFile)
+			files.DELETE("/delete", h.MoveTrashFile)
 		}
 	}
 

@@ -132,7 +132,12 @@ func (h *Handler) DownloadFile(c *gin.Context) {
 
 func (h *Handler) MoveTrashFile(c *gin.Context) {
 
-	uidFile := c.Param("uid")
+	var input files.UidFile
+
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
 
 	userUid, err := getUserUid(c)
 
@@ -141,7 +146,7 @@ func (h *Handler) MoveTrashFile(c *gin.Context) {
 		return
 	}
 
-	err = h.services.MoveTrashFile(userUid, uidFile)
+	err = h.services.MoveTrashFile(userUid, input.Uid)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())

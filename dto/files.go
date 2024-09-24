@@ -39,6 +39,10 @@ type DownloadFile struct {
 	Name    string `json:"name"`
 }
 
+type UidFile struct {
+	Uid string `json:"uid"`
+}
+
 type File struct {
 	Uid         string `json:"uid" db:"uid"`
 	RootUid     string `json:"rootUid" db:"root_uid"`

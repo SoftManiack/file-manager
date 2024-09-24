@@ -22,7 +22,8 @@ func (r *FilesPostgres) CreateFile(newFile files.NewFile) (files.File, error) {
 
 	var file files.File
 	var uidFile string
-	var names []string
+	var uid string = ""
+	//var names []string
 
 	tx, err := r.db.Begin()
 
@@ -31,17 +32,24 @@ func (r *FilesPostgres) CreateFile(newFile files.NewFile) (files.File, error) {
 		return files.File{}, err
 	}
 
-	queryGetFilesNameFromDir := fmt.Sprintf("SELECT name FROM %s WHERE root_uid = $1", filesTable)
+	//queryGetFilesNameFromDir := fmt.Sprintf("SELECT name FROM %s WHERE root_uid = $1", filesTable)
+	queryGetUidForName := fmt.Sprintf("SELECT uid FROM %s WHERE name = $1", filesTable)
 	queryCreateFile := fmt.Sprintf("INSERT INTO %s ( root_uid, name, path, size, data ) VALUES ($1, $2, $3, $4, $5) RETURNING uid", filesTable)
 	queryGetNewFile := fmt.Sprintf("SELECT * FROM %s WHERE uid = $1", filesTable)
 
-	fmt.Println(queryGetFilesNameFromDir)
-	if err := r.db.Select(&names, queryGetFilesNameFromDir, newFile.RootUid); err != nil {
+	/*if err := r.db.Select(&names, queryGetFilesNameFromDir, newFile.RootUid); err != nil {
 		tx.Rollback()
 		return file, err
 	}
 
 	if len(names) > 0 {
+		tx.Rollback()
+		return file, errors.New("такое имя уже существует")
+	}*/
+
+	err = r.db.Get(&uid, queryGetUidForName, newFile.Name)
+
+	if uid != "" {
 		tx.Rollback()
 		return file, errors.New("такое имя уже существует")
 	}

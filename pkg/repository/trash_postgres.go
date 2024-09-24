@@ -27,17 +27,32 @@ func (r *TrashPostgres) MoveTrashFile(uidUser, uidFile string) error {
 	// получить id корзины
 	// сохранить в file_trash
 
+	var uidTrash string
+
 	tx, err := r.db.Begin()
 	if err != nil {
+		tx.Rollback()
 		return err
 	}
 
 	queryUpdateIsDelete := fmt.Sprintf("UPDATE %s SET is_delete = true WHERE uid = $1", filesTable)
-	queryMoveTrash := fmt.Sprintf("INSERT INTO %s ( trash_uid, uid_file ) values ($1) WHERE trash_uid = ( SELECT uid FROM trash WHERE users_uid = $2)", trashFilesTable)
+	queryTrashUid := fmt.Sprintf("SELECT uid FROM %s WHERE users_uid = $1", trashTable)
+
+	queryMoveTrash := fmt.Sprintf("INSERT INTO %s ( trash_uid, uid_file ) values ($1, $2)", trashFilesTable)
 
 	_, err = r.db.Exec(queryUpdateIsDelete, uidFile)
 
-	_, err = r.db.Exec(queryMoveTrash, uidUser, uidFile)
+	if err := r.db.Get(&uidTrash, queryTrashUid, uidUser); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	_, err = r.db.Exec(queryMoveTrash, uidTrash, uidFile)
+
+	if err := r.db.Get(&uidTrash, queryTrashUid, uidUser); err != nil {
+		tx.Rollback()
+		return err
+	}
 
 	return tx.Commit()
 }
