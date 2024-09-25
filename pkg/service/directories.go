@@ -73,12 +73,12 @@ func (s *DirectoriesService) UpdateDirectory(input directories.UpdateDirectory) 
 	return directory, nil
 }
 
-func (s *DirectoriesService) DownloadDirectory(uid string) error {
+func (s *DirectoriesService) DownloadDirectory(uidDir string) error {
 
 	return nil
 }
 
-func (s *DirectoriesService) RemoveTrashDirectory(uid string) error {
+func (s *DirectoriesService) MoveTrashDirectory(uidDir string) error {
 
 	return nil
 }

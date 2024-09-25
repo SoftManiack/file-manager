@@ -21,7 +21,7 @@ type Directories interface {
 	CreateDirectory(uid string, input directories.NewDirectory) (directories.Directories, error)
 	UpdateDirectory(input directories.UpdateDirectory) (directories.Directories, error)
 	DownloadDirectory(uid string) error
-	RemoveTrashDirectory(uid string) error
+	MoveTrashDirectory(uidDir string) error
 }
 
 type Files interface {
@@ -31,12 +31,16 @@ type Files interface {
 }
 
 type Trash interface {
+	GetTrash(uidUser string) ([]directories.Directories, []files.File, error)
+	DeleteTrashFile(uidFile, uidUser string) error
+	DeleteTrashDirectory(uidDir, uidUser string) error
 }
 
 type Service struct {
 	Authorization
 	Directories
 	Files
+	Trash
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -44,5 +48,6 @@ func NewService(repos *repository.Repository) *Service {
 		Authorization: NewAuthService(repos.Authorization),
 		Directories:   NewDirectoriesService(repos.Directories),
 		Files:         NewFilesService(repos.Files, repos.Trash),
+		Trash:         NewTrashService(repos.Trash),
 	}
 }

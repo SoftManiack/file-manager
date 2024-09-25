@@ -36,7 +36,7 @@ type Trash interface {
 	RemoveTrashFile(uid string) error
 	DeleteTrashFile(uid string) error
 	DeleteTrashDirectory(uid string) error
-	GetTrash() ([]directories.Directories, []files.File, error)
+	GetTrash(uidUser string) ([]directories.Directories, []files.File, error)
 }
 
 type Repository struct {

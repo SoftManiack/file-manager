@@ -38,7 +38,7 @@ func (r *TrashPostgres) MoveTrashFile(uidUser, uidFile string) error {
 	queryUpdateIsDelete := fmt.Sprintf("UPDATE %s SET is_delete = true WHERE uid = $1", filesTable)
 	queryTrashUid := fmt.Sprintf("SELECT uid FROM %s WHERE users_uid = $1", trashTable)
 
-	queryMoveTrash := fmt.Sprintf("INSERT INTO %s ( trash_uid, uid_file ) values ($1, $2)", trashFilesTable)
+	queryMoveTrash := fmt.Sprintf("INSERT INTO %s ( trash_uid, files_uid ) values ($1, $2)", trashFilesTable)
 
 	_, err = r.db.Exec(queryUpdateIsDelete, uidFile)
 
@@ -49,7 +49,7 @@ func (r *TrashPostgres) MoveTrashFile(uidUser, uidFile string) error {
 
 	_, err = r.db.Exec(queryMoveTrash, uidTrash, uidFile)
 
-	if err := r.db.Get(&uidTrash, queryTrashUid, uidUser); err != nil {
+	if err != nil {
 		tx.Rollback()
 		return err
 	}
@@ -57,7 +57,7 @@ func (r *TrashPostgres) MoveTrashFile(uidUser, uidFile string) error {
 	return tx.Commit()
 }
 
-func (r *TrashPostgres) RemoveTrashDirectory(uid string) error {
+func (r *TrashPostgres) RemoveTrashDirectory(uidDir string) error {
 
 	return nil
 }
@@ -67,9 +67,29 @@ func (r *TrashPostgres) RemoveTrashFile(uid string) error {
 	return nil
 }
 
-func (r *TrashPostgres) DeleteTrashFile(uid string) error {
+func (r *TrashPostgres) DeleteTrashFile(uidFile string) error {
 
-	return nil
+	// удалить еше из корзины
+
+	queryDeleteFile := fmt.Sprintf("DELETE FROM %s WHERE uid = $1", filesTable)
+	queryDeleteFileTrash := fmt.Sprintf("DELETE FROM %s WHERE files_uid = $1", trashFilesTable)
+
+	tx, err := r.db.Begin()
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	_, err = r.db.Exec(queryDeleteFile, uidFile)
+
+	_, err = r.db.Exec(queryDeleteFileTrash, uidFile)
+
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit()
 }
 
 func (r *TrashPostgres) DeleteTrashDirectory(uid string) error {
@@ -77,7 +97,24 @@ func (r *TrashPostgres) DeleteTrashDirectory(uid string) error {
 	return nil
 }
 
-func (r *TrashPostgres) GetTrash() ([]directories.Directories, []files.File, error) {
+func (r *TrashPostgres) GetTrash(uidUser string) ([]directories.Directories, []files.File, error) {
 
-	return []directories.Directories{}, []files.File{}, nil
+	var getDrectories []directories.Directories
+	var getFiles []files.File
+
+	queryGetFiles := fmt.Sprintf("SELECT * FROM %s WHERE uid = ( SELECT files_uid FROM %s WHERE trash_uid = ( SELECT uid FROM %s WHERE users_uid = $1 ))", filesTable, trashFilesTable, trashTable)
+
+	fmt.Println(queryGetFiles)
+	tx, err := r.db.Begin()
+	if err != nil {
+		tx.Rollback()
+		return getDrectories, getFiles, err
+	}
+
+	if err := r.db.Select(&getFiles, queryGetFiles, uidUser); err != nil {
+		tx.Rollback()
+		return getDrectories, getFiles, err
+	}
+
+	return getDrectories, getFiles, tx.Commit()
 }

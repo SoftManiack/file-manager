@@ -54,6 +54,12 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			files.PATCH("/", h.UpdateFile)
 			files.DELETE("/delete", h.MoveTrashFile)
 		}
+
+		trash := fm.Group("/trash")
+		{
+			trash.GET("/", h.GetTrash)
+			trash.DELETE("/file", h.DeleteTrashFile)
+		}
 	}
 
 	return router
