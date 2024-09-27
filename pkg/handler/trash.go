@@ -3,7 +3,6 @@ package handler
 import (
 	dto "file-manager/dto"
 	files "file-manager/dto"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,7 +12,6 @@ func (h *Handler) GetTrash(c *gin.Context) {
 
 	userUid, err := getUserUid(c)
 
-	fmt.Println(userUid)
 	if err != nil {
 		return
 	}
@@ -72,5 +70,22 @@ func (h *Handler) DeleteTrashDirectory(c *gin.Context) {
 }
 
 func (h *Handler) RemoveTrashFile(c *gin.Context) {
+	var input files.UidFile
 
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	err := h.services.RemoveTrashFile(input.Uid)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, HttpResponse{
+		Message: "success",
+		Data:    nil,
+	})
 }

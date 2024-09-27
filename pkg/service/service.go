@@ -34,6 +34,7 @@ type Trash interface {
 	GetTrash(uidUser string) ([]directories.Directories, []files.File, error)
 	DeleteTrashFile(DeleteFile files.DeleteFile, uidUser string) error
 	DeleteTrashDirectory(uidDir, uidUser string) error
+	RemoveTrashFile(uidFile string) error
 }
 
 type Service struct {

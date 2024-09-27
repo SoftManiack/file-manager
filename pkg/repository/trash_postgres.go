@@ -62,9 +62,27 @@ func (r *TrashPostgres) RemoveTrashDirectory(uidDir string) error {
 	return nil
 }
 
-func (r *TrashPostgres) RemoveTrashFile(uid string) error {
+func (r *TrashPostgres) RemoveTrashFile(uidFile string) error {
 
-	return nil
+	queryDeleteFileForTrash := fmt.Sprintf("DELETE FROM %s WHERE files_uid = $1", trashFilesTable)
+	queryUpdateFile := fmt.Sprintf("UPDATE %s SET is_delete = false WHERE uid = $1", filesTable)
+
+	tx, err := r.db.Begin()
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	_, err = r.db.Exec(queryDeleteFileForTrash, uidFile)
+
+	_, err = r.db.Exec(queryUpdateFile, uidFile)
+
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit()
 }
 
 func (r *TrashPostgres) DeleteTrashFile(uidFile string) error {
@@ -104,7 +122,6 @@ func (r *TrashPostgres) GetTrash(uidUser string) ([]directories.Directories, []f
 
 	queryGetFiles := fmt.Sprintf("SELECT * FROM %s WHERE uid = ( SELECT files_uid FROM %s WHERE trash_uid = ( SELECT uid FROM %s WHERE users_uid = $1 ))", filesTable, trashFilesTable, trashTable)
 
-	fmt.Println(queryGetFiles)
 	tx, err := r.db.Begin()
 	if err != nil {
 		tx.Rollback()

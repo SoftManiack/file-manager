@@ -170,26 +170,16 @@ func (r *FilesPostgres) MoveFile(uidFile, uidTargetRoot string) error {
 
 func (r *FilesPostgres) getPath(uidDir, name string) (string, error) {
 
-	fmt.Println(uidDir)
-	fmt.Println(name)
-
 	var path string
 	var rootDirectory directories.Directories
 
 	queryGetRoot := fmt.Sprintf("SELECT * FROM %s WHERE uid = $1", directoriesTable)
 
 	if err := r.db.Get(&rootDirectory, queryGetRoot, uidDir); err != nil {
-		fmt.Println(err)
 		return "", err
 	}
 
-	fmt.Printf("%#v\n", rootDirectory)
-
-	fmt.Println("rootDirectory")
-	fmt.Println(rootDirectory)
 	path = rootDirectory.Path + "/" + name
-
-	fmt.Println(path)
 
 	return path, nil
 }

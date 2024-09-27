@@ -4,7 +4,6 @@ import (
 	directories "file-manager/dto"
 	files "file-manager/dto"
 	"file-manager/pkg/repository"
-	"fmt"
 	"os"
 )
 
@@ -32,9 +31,6 @@ func (s *TrashService) GetTrash(uidUser string) ([]directories.Directories, []fi
 
 func (s *TrashService) DeleteTrashFile(deleteFile files.DeleteFile, uidUser string) error {
 
-	fmt.Println("123")
-	fmt.Println(uidUser)
-
 	err := s.repo.DeleteTrashFile(deleteFile.Uid)
 	var path string
 
@@ -42,24 +38,30 @@ func (s *TrashService) DeleteTrashFile(deleteFile files.DeleteFile, uidUser stri
 		return err
 	}
 
-	fmt.Println("root uid")
-	fmt.Println(deleteFile.RootUid)
-	fmt.Println("uid user")
-	fmt.Println(uidUser)
-
 	if deleteFile.RootUid == uidUser {
 		path = os.Getenv("PATH_FILES") + "/" + uidUser + "/" + deleteFile.Name
 	} else {
 		path = os.Getenv("PATH_FILES") + "/" + uidUser + "/" + deleteFile.RootUid + "/" + deleteFile.Name
 	}
 
-	fmt.Println(path)
 	os.Remove(path)
 
 	return nil
 }
 
 func (s *TrashService) DeleteTrashDirectory(uidDir, uidUser string) error {
+
+	return nil
+}
+
+func (s *TrashService) RemoveTrashFile(uidFile string) error {
+
+	err := s.repo.RemoveTrashFile(uidFile)
+
+	if err != nil {
+
+		return err
+	}
 
 	return nil
 }

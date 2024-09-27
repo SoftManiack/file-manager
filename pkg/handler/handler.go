@@ -59,6 +59,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			trash.GET("/", h.GetTrash)
 			trash.DELETE("/file", h.DeleteTrashFile)
+			trash.POST("/file/remove", h.RemoveTrashFile)
 		}
 	}
 
