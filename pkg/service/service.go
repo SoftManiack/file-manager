@@ -32,7 +32,7 @@ type Files interface {
 
 type Trash interface {
 	GetTrash(uidUser string) ([]directories.Directories, []files.File, error)
-	DeleteTrashFile(uidFile, uidUser string) error
+	DeleteTrashFile(DeleteFile files.DeleteFile, uidUser string) error
 	DeleteTrashDirectory(uidDir, uidUser string) error
 }
 

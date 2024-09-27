@@ -17,6 +17,12 @@ type UpdateDirectory struct {
 	IsDelete    bool   `json:"isDelete"`
 }
 
+type DeleteDirectory struct {
+	Uid     string `json:"uid"`
+	RootUid string `json:"rootUid"`
+	Name    string `json:"name"`
+}
+
 type Directories struct {
 	Uid          string `json:"uid" db:"uid"`
 	UsersUid     string `json:"uidUsers" db:"users_uid"`

@@ -43,6 +43,12 @@ type UidFile struct {
 	Uid string `json:"uid"`
 }
 
+type DeleteFile struct {
+	Uid     string `json:"uid" binding:"required"`
+	RootUid string `json:"rootUid" binding:"required"`
+	Name    string `json:"name" binding:"required"`
+}
+
 type File struct {
 	Uid         string `json:"uid" db:"uid"`
 	RootUid     string `json:"rootUid" db:"root_uid"`

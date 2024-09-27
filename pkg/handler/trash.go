@@ -39,7 +39,7 @@ func (h *Handler) GetTrash(c *gin.Context) {
 
 func (h *Handler) DeleteTrashFile(c *gin.Context) {
 
-	var input files.UidFile
+	var input files.DeleteFile
 
 	userUid, err := getUserUid(c)
 
@@ -53,7 +53,7 @@ func (h *Handler) DeleteTrashFile(c *gin.Context) {
 		return
 	}
 
-	err = h.services.DeleteTrashFile(input.Uid, userUid)
+	err = h.services.DeleteTrashFile(input, userUid)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -68,5 +68,9 @@ func (h *Handler) DeleteTrashFile(c *gin.Context) {
 }
 
 func (h *Handler) DeleteTrashDirectory(c *gin.Context) {
+
+}
+
+func (h *Handler) RemoveTrashFile(c *gin.Context) {
 
 }

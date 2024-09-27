@@ -36,14 +36,18 @@ func (h *Handler) UpdateFile(c *gin.Context) {
 
 func (h *Handler) UploadFile(c *gin.Context) {
 
+	fmt.Println("123")
+
 	var newFile files.NewFile
-	//var saveFile files.File
+
 	var path string
 	var extension string
 
 	rootDir := c.Param("uid")
 	file, _ := c.FormFile("file")
 	userUid, err := getUserUid(c)
+
+	fmt.Sprintln(file.Filename)
 
 	extension = strings.Split(file.Filename, ".")[1]
 
@@ -132,6 +136,7 @@ func (h *Handler) DownloadFile(c *gin.Context) {
 
 func (h *Handler) MoveTrashFile(c *gin.Context) {
 
+	fmt.Println("delete file")
 	var input files.UidFile
 
 	if err := c.BindJSON(&input); err != nil {
@@ -140,6 +145,9 @@ func (h *Handler) MoveTrashFile(c *gin.Context) {
 	}
 
 	userUid, err := getUserUid(c)
+
+	fmt.Println(input)
+	fmt.Println(userUid)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())

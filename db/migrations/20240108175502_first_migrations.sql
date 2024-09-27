@@ -75,7 +75,6 @@ CREATE TABLE recents_file
     files_uid UUID REFERENCES files(uid) ON DELETE CASCADE NOT NULL
 );
 
-
 -- +goose StatementEnd
 
 -- +goose Down
@@ -98,7 +97,7 @@ CREATE TABLE recents_file
 
 -- +goose StatementEnd
 
--- Таблица  кбелей мощностей в ней скрипт
+-- Таблица кбелей мощностей в ней скрипт
 
 -- Подбор кабеля по парамтерам
 -- Програмка в питоне с формам и тоже самое как в экселе
