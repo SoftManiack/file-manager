@@ -31,8 +31,8 @@ type Directories struct {
 	DateUpdate   string `json:"dateUpdate" db:"date_update"`
 	Name         string `json:"name" db:"name"`
 	IsFavorites  bool   `json:"isFavorite" db:"is_favorites"`
-	IsLink       bool   `json:"IsLink" db:"is_link"`
-	IsDelete     bool   `json:"IsDelete" db:"is_delete"`
+	IsLink       bool   `json:"isLink" db:"is_link"`
+	IsDelete     bool   `json:"isDelete" db:"is_delete"`
 	Size         int64  `json:"size" db:"size"`
 	Path         string `json:"path" db:"path"`
 	CountElement int64  `json:"countElement" db:"count_element"`
@@ -40,6 +40,7 @@ type Directories struct {
 }
 
 type DirectoriesTree struct {
-	Directories []Directories
-	File        []File
+	DirectoriesTree []DirectoriesTree
+	Directories     []Directories
+	File            []File
 }

@@ -26,6 +26,7 @@ type Directories interface {
 
 type Files interface {
 	CreateFile(newFile files.NewFile) (files.File, error)
+	UpdateTextFile(file files.UpdateTextFile) error
 	UpdateFile(updateFIle files.UpdateFile) (files.File, error)
 	MoveTrashFile(uidUser, uidFile string) error
 }
@@ -37,11 +38,17 @@ type Trash interface {
 	RemoveTrashFile(uidFile string) error
 }
 
+type Recent interface {
+	GetRecent(uidUser string) ([]files.File, error)
+	UpdateRecent(uidUser string) error
+}
+
 type Service struct {
 	Authorization
 	Directories
 	Files
 	Trash
+	Recent
 }
 
 func NewService(repos *repository.Repository) *Service {

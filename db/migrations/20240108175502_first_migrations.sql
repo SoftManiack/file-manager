@@ -65,13 +65,7 @@ CREATE TABLE trash_files
 CREATE TABLE recents
 (
     uid UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
-    users_uid UUID REFERENCES users(uid) ON DELETE CASCADE NOT NULL
-);
-
-CREATE TABLE recents_file
-(
-    uid UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
-    recents_uid UUID REFERENCES recents(uid) ON DELETE CASCADE NOT NULL,
+    users_uid UUID REFERENCES users(uid) ON DELETE CASCADE NOT NULL,
     files_uid UUID REFERENCES files(uid) ON DELETE CASCADE NOT NULL
 );
 
@@ -92,8 +86,6 @@ CREATE TABLE recents_file
     DROP TABLE IF EXISTS trash_files CASCADE;
 
     DROP TABLE IF EXISTS recents CASCADE;
-
-    DROP TABLE IF EXISTS recents_file CASCADE;
 
 -- +goose StatementEnd
 

@@ -251,6 +251,55 @@ func (h *Handler) CreateTextFile(c *gin.Context) {
 
 }
 
+func (h *Handler) UpdateTextFile(c *gin.Context) {
+
+	var input files.UpdateTextFile
+	var path string
+
+	//var saveFile files.File
+
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	userUid, err := getUserUid(c)
+
+	if err != nil {
+		return
+	}
+
+	if input.RootUid == userUid {
+		path = os.Getenv("PATH_FILES") + "/" + input.RootUid
+	} else {
+		path = os.Getenv("PATH_FILES") + "/" + userUid + "/" + input.RootUid
+	}
+
+	err = h.services.UpdateTextFile(input)
+
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	fmt.Println(path + "/" + input.Name + ".txt")
+
+	if err == nil {
+
+		err = os.WriteFile(path+"/"+input.Name+".txt", []byte(input.Text), 0644)
+		if err != nil {
+			newErrorResponse(c, http.StatusInternalServerError, err.Error())
+			os.Exit(1)
+		}
+
+	}
+
+	c.JSON(http.StatusOK, HttpResponse{
+		Message: "success",
+		Data:    nil,
+	})
+}
+
 func (h *Handler) CreateTable(c *gin.Context) {
 
 }

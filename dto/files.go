@@ -14,6 +14,14 @@ type NewTextFile struct {
 	Text    string `json:"text"`
 }
 
+type UpdateTextFile struct {
+	Uid         string `json:"uid"`
+	RootUid     string `json:"rootUid"`
+	Name        string `json:"name"`
+	IsFavorites bool   `json:"isFavorites"`
+	Text        string `json:"text"`
+}
+
 type NewTableFile struct {
 	RootUid string `json:"rootUid"`
 	Name    string `json:"name"`
@@ -57,8 +65,8 @@ type File struct {
 	Name        string `json:"name" db:"name"`
 	Path        string `json:"path" db:"path"`
 	IsFavorites bool   `json:"isFavorite" db:"is_favorites"`
-	IsLink      bool   `json:"IsLink" db:"is_link"`
-	IsDelete    bool   `json:"IsDelete" db:"is_delete"`
+	IsLink      bool   `json:"isLink" db:"is_link"`
+	IsDelete    bool   `json:"isDelete" db:"is_delete"`
 	Size        int64  `json:"size" db:"size"`
 	Type        string `json:"type" db:"type"`
 	Data        string `json:"data"`

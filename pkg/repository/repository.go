@@ -25,6 +25,7 @@ type Directories interface {
 type Files interface {
 	CreateFile(input files.NewFile) (files.File, error)
 	UpdateFile(input files.UpdateFile) (files.File, error)
+	UpdateTextFile(input files.UpdateTextFile) error
 	CopyFile(uidFile, uidTargetRoot string) error
 	MoveFile(uidFile, uidTargetRoot string) error
 }
@@ -39,11 +40,17 @@ type Trash interface {
 	GetTrash(uidUser string) ([]directories.Directories, []files.File, error)
 }
 
+type Recent interface {
+	GetRecent(uidUser string) ([]files.File, error)
+	UpdateRecent(uidUser string) error
+}
+
 type Repository struct {
 	Authorization
 	Directories
 	Files
 	Trash
+	Recent
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
@@ -52,5 +59,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 		Directories:   NewDirectoriesPostgres(db),
 		Files:         NewFilesPostgres(db),
 		Trash:         NewTrashPostgres(db),
+		Recent:        NewRecentPostgres(db),
 	}
 }

@@ -3,7 +3,6 @@ package service
 import (
 	files "file-manager/dto"
 	"file-manager/pkg/repository"
-	"fmt"
 )
 
 type FilesService struct {
@@ -44,10 +43,18 @@ func (s *FilesService) MoveTrashFile(uidUser, uidFile string) error {
 
 	// записать в базу
 
-	fmt.Println(uidUser)
-	fmt.Println(uidFile)
-
 	err := s.trash.MoveTrashFile(uidUser, uidFile)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *FilesService) UpdateTextFile(updateFile files.UpdateTextFile) error {
+
+	err := s.repo.UpdateTextFile(updateFile)
 
 	if err != nil {
 		return err

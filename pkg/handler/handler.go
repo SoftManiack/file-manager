@@ -51,6 +51,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			files.GET("/download", h.DownloadFile)
 			files.POST("/text/add", h.CreateTextFile)
+			files.PATCH("/text/update", h.UpdateTextFile)
 			files.PATCH("/", h.UpdateFile)
 			files.DELETE("/delete", h.MoveTrashFile)
 		}
@@ -61,6 +62,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			trash.DELETE("/file", h.DeleteTrashFile)
 			trash.POST("/file/remove", h.RemoveTrashFile)
 		}
+
+		recent := fm.Group("/recent")
+		{
+			recent.GET("/", h.GetRecent)
+		}
 	}
 
 	return router
@@ -68,7 +74,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 // 1) Скачивание файла #
 // 2) Скачивание директории
-// 3) Удаление файла
+// 3) Удаление файла #
 // 4) Удаление директории
 // 5) Вывод корзины #
 // 6) Перемещение файла
@@ -81,5 +87,5 @@ func (h *Handler) InitRoutes() *gin.Engine {
 // 13) В контейнер на серваке
 // 14) Базу разворачиваем на сервере
 // 15) созд тектс файл #
-// 16) Редактировать текст файл
+// 16) Редактировать текст файл #
 // 17) htpps на сервере

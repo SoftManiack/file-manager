@@ -2,7 +2,6 @@ package repository
 
 import (
 	"errors"
-	directories "file-manager/dto"
 	files "file-manager/dto"
 	"fmt"
 
@@ -75,7 +74,7 @@ func (r *FilesPostgres) UpdateFile(input files.UpdateFile) (files.File, error) {
 
 	tx, err := r.db.Begin()
 
-	queryUpdateFile := fmt.Sprintf("UPDATE %s SET name = $1, is_favorites = $2 WHERE uid = $3", filesTable)
+	queryUpdateFile := fmt.Sprintf("UPDATE %s SET name = $1, is_favorites = $2, date_update = DEFAULT WHERE uid = $3", filesTable)
 	queryGetNewFile := fmt.Sprintf("SELECT * FROM %s WHERE uid = $1", filesTable)
 
 	_, err = r.db.Exec(queryUpdateFile, input.Name, input.IsFavorites, input.Uid)
@@ -103,72 +102,23 @@ func (r *FilesPostgres) MoveFile(uidFile, uidTargetRoot string) error {
 	return nil
 }
 
-/* func (r *FilesPostgres) CreateTextFile(userUid string, input dto.NewTextFile) (dto.TextFile, error) {
-
-	var newFile dto.TextFile
-
-	var path string = ""
-	var uidCheck string = ""
-	var uidFile string = ""
-
-	queryGetUid := fmt.Sprintf("SELECT uid FROM %s WHERE name = $1 AND root_uid = $2", textFilesTable)
-	queryCreateFile := fmt.Sprintf("INSERT INTO %s ( root_uid, name, is_favorites, path ) values ($1, $2, $3, $4) RETURNING uid", textFilesTable)
-	queryGetFile := fmt.Sprintf("SELECT * FROM %s WHERE uid = $1", textFilesTable)
-	queryAddCount := fmt.Sprintf("UPDATE  %s SET count_element = 1 + ( SELECT count_element FROM  %s WHERE uid = $1 ) WHERE uid = $1", directoriesTable, directoriesTable)
+func (r *FilesPostgres) UpdateTextFile(updateFile files.UpdateTextFile) error {
 
 	tx, err := r.db.Begin()
+
+	queryUpdateFile := fmt.Sprintf("UPDATE %s SET name = $1, is_favorites = $2, data = $3 WHERE uid = $4", filesTable)
+
+	_, err = r.db.Exec(queryUpdateFile, updateFile.Name, updateFile.IsFavorites, []byte(updateFile.Text), updateFile.Uid)
+
 	if err != nil {
-		return newFile, err
-	}
-
-	err = r.db.Get(&uidCheck, queryGetUid, input.Name, input.RootUid)
-
-	fmt.Println("check uid")
-	fmt.Println(uidCheck)
-	fmt.Println(err)
-
-	if uidCheck != "" {
 		tx.Rollback()
-		return newFile, errors.New("такое имя уже существует")
+		return err
 	}
 
-	if err == sql.ErrNoRows {
+	return tx.Commit()
+}
 
-		path, err = r.getPath(input.RootUid, input.Name)
-
-		if err != nil {
-			return newFile, err
-		}
-
-		fmt.Println("queryCreateFile")
-		row := r.db.QueryRow(queryCreateFile, input.RootUid, input.Name, false, path)
-		if err := row.Scan(&uidFile); err != nil {
-			tx.Rollback()
-			return newFile, err
-		}
-
-		if err := r.db.Get(&newFile, queryGetFile, uidFile); err != nil {
-			tx.Rollback()
-			return newFile, err
-		}
-
-		_, err = r.db.Exec(queryAddCount, input.RootUid, directoriesTable, directoriesTable)
-
-		if err != nil {
-			tx.Rollback()
-			return newFile, err
-		}
-
-	} else {
-		tx.Rollback()
-		return newFile, err
-	}
-
-	return newFile, tx.Commit()
-
-} */
-
-func (r *FilesPostgres) getPath(uidDir, name string) (string, error) {
+/*func (r *FilesPostgres) getPath(uidDir, name string) (string, error) {
 
 	var path string
 	var rootDirectory directories.Directories
@@ -178,8 +128,7 @@ func (r *FilesPostgres) getPath(uidDir, name string) (string, error) {
 	if err := r.db.Get(&rootDirectory, queryGetRoot, uidDir); err != nil {
 		return "", err
 	}
-
-	path = rootDirectory.Path + "/" + name
+	_, err = r.db.Exec(queryUpdateFile, input.Name, input.IsFavorites, input.Uid) + name
 
 	return path, nil
-}
+}*/
