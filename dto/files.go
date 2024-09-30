@@ -31,7 +31,9 @@ type NewTableFile struct {
 type UpdateFile struct {
 	Uid         string `json:"uid"`
 	Name        string `json:"name"`
+	OldName     string `json:"oldName"`
 	IsFavorites bool   `json:"isFavorites"`
+	RootUid     string `json:"rootUid"`
 }
 
 type UploadFile struct {

@@ -15,6 +15,13 @@ import (
 func (h *Handler) UpdateFile(c *gin.Context) {
 
 	var input files.UpdateFile
+	var path string
+
+	userUid, err := getUserUid(c)
+
+	if err != nil {
+		return
+	}
 
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -22,6 +29,19 @@ func (h *Handler) UpdateFile(c *gin.Context) {
 	}
 
 	file, err := h.services.UpdateFile(input)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if userUid == input.RootUid {
+		path = os.Getenv("PATH_FILES") + "/" + input.RootUid + "/"
+	} else {
+		path = os.Getenv("PATH_FILES") + "/" + userUid + "/" + input.RootUid + "/"
+	}
+
+	err = os.Rename(path+input.OldName, path+input.Name)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -47,7 +67,7 @@ func (h *Handler) UploadFile(c *gin.Context) {
 	file, _ := c.FormFile("file")
 	userUid, err := getUserUid(c)
 
-	fmt.Sprintln(file.Filename)
+	fmt.Println(file.Filename)
 
 	extension = strings.Split(file.Filename, ".")[1]
 
