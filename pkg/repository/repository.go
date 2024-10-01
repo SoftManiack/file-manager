@@ -26,8 +26,8 @@ type Files interface {
 	CreateFile(input files.NewFile) (files.File, error)
 	UpdateFile(input files.UpdateFile) (files.File, error)
 	UpdateTextFile(input files.UpdateTextFile) error
-	CopyFile(uidFile, uidTargetRoot string) error
 	MoveFile(uidFile, uidTargetRoot string) error
+	CopyFile(copy files.CopyFile) error
 }
 
 type Trash interface {
@@ -43,6 +43,7 @@ type Trash interface {
 type Recent interface {
 	GetRecent(uidUser string) ([]files.File, error)
 	UpdateRecent(uidUser string) error
+	SetRecent(uidUser, uidFile string) error
 }
 
 type Repository struct {

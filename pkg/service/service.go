@@ -29,6 +29,7 @@ type Files interface {
 	UpdateTextFile(file files.UpdateTextFile) error
 	UpdateFile(updateFIle files.UpdateFile) (files.File, error)
 	MoveTrashFile(uidUser, uidFile string) error
+	CopyFile(copy files.CopyFile) error
 }
 
 type Trash interface {

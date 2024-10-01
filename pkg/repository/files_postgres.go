@@ -92,9 +92,40 @@ func (r *FilesPostgres) UpdateFile(input files.UpdateFile) (files.File, error) {
 	return file, tx.Commit()
 }
 
-func (r *FilesPostgres) CopyFile(uidFile, uidTargetRoot string) error {
+func (r *FilesPostgres) CopyFile(copy files.CopyFile) error {
 
-	return nil
+	// получить file
+	// доавить в друг dir
+
+	var file files.File
+	var uidFile string
+
+	tx, err := r.db.Begin()
+
+	queryGetFile := fmt.Sprintf("SELECT * FROM %s WHERE uid = $1", filesTable)
+	queryGetUidForName := fmt.Sprintf("SELECT uid FROM %s WHERE name = $1 AND root_uid = $2", filesTable)
+	queryCreateFile := fmt.Sprintf("INSERT INTO %s ( root_uid, name, path, size, data ) VALUES ($1, $2, $3, $4, $5) RETURNING uid", filesTable)
+
+	if err = r.db.Get(&file, queryGetFile, copy.Uid); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	err = r.db.Get(&uidFile, queryGetUidForName, copy.Name, copy.RootDirUid)
+
+	if uidFile != "" {
+		tx.Rollback()
+		return errors.New("такое имя уже существует")
+	}
+
+	row := r.db.QueryRow(queryCreateFile, copy.RootDirUid, file.Name, file.Path, file.Size, file.Data)
+
+	if err := row.Scan(&uidFile); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit()
 }
 
 func (r *FilesPostgres) MoveFile(uidFile, uidTargetRoot string) error {

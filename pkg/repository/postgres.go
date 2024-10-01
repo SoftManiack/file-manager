@@ -14,6 +14,7 @@ const (
 	trashTable           = "trash"
 	trashDirecoriesTable = "trash_direcories"
 	trashFilesTable      = "trash_files"
+	recentTable          = "recents"
 )
 
 type Config struct {

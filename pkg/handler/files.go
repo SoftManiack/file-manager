@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"os/exec"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -56,8 +57,6 @@ func (h *Handler) UpdateFile(c *gin.Context) {
 
 func (h *Handler) UploadFile(c *gin.Context) {
 
-	fmt.Println("123")
-
 	var newFile files.NewFile
 
 	var path string
@@ -66,8 +65,6 @@ func (h *Handler) UploadFile(c *gin.Context) {
 	rootDir := c.Param("uid")
 	file, _ := c.FormFile("file")
 	userUid, err := getUserUid(c)
-
-	fmt.Println(file.Filename)
 
 	extension = strings.Split(file.Filename, ".")[1]
 
@@ -321,6 +318,65 @@ func (h *Handler) UpdateTextFile(c *gin.Context) {
 }
 
 func (h *Handler) CreateTable(c *gin.Context) {
+
+}
+
+func (h *Handler) CopyFile(c *gin.Context) {
+
+	var input files.CopyFile
+	var pathFile string
+	var pathTargetDir string
+
+	//var saveFile files.File
+
+	fmt.Println(input)
+
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	userUid, err := getUserUid(c)
+
+	if err != nil {
+		return
+	}
+
+	err = h.services.CopyFile(input)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if input.RootUid == userUid {
+		pathFile = os.Getenv("PATH_FILES") + "/" + input.RootUid
+	} else {
+		pathFile = os.Getenv("PATH_FILES") + "/" + userUid + "/" + input.RootUid
+	}
+
+	if input.RootDirUid == userUid {
+		pathTargetDir = os.Getenv("PATH_FILES") + "/" + input.RootDirUid
+	} else {
+		pathTargetDir = os.Getenv("PATH_FILES") + "/" + userUid + "/" + input.RootDirUid
+	}
+
+	fmt.Println("1")
+	fmt.Println(pathTargetDir)
+	fmt.Println(pathFile + "/" + input.Name)
+
+	cpCmd := exec.Command("cp", "-rf", pathFile+"/"+input.Name, pathTargetDir)
+
+	err = cpCmd.Run()
+
+	c.JSON(http.StatusOK, HttpResponse{
+		Message: "success",
+		Data:    nil,
+	})
+	// скопиров стар файл и вставить в новую директорию
+}
+
+func (h *Handler) MoverFile(c *gin.Context) {
 
 }
 

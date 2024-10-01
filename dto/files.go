@@ -43,6 +43,13 @@ type UploadFile struct {
 	Extension string `json:"extension"`
 }
 
+type CopyFile struct {
+	Uid        string `json:"uid"`
+	RootUid    string `json:"rootUid"`
+	Name       string `json:"name"`
+	RootDirUid string `json:"rootDirUid"`
+}
+
 type DownloadFile struct {
 	Uid     string `json:"uid"`
 	UidRoot string `json:"rootUid"`

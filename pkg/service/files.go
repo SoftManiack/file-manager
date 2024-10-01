@@ -67,3 +67,14 @@ func (s *FilesService) UpdateTextFile(updateFile files.UpdateTextFile) error {
 
 }
 */
+
+func (s *FilesService) CopyFile(copy files.CopyFile) error {
+
+	err := s.repo.CopyFile(copy)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

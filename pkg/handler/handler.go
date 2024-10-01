@@ -54,6 +54,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			files.PATCH("/text/update", h.UpdateTextFile)
 			files.PATCH("/", h.UpdateFile)
 			files.DELETE("/delete", h.MoveTrashFile)
+			files.POST("/copy", h.CopyFile)
 		}
 
 		trash := fm.Group("/trash")
@@ -79,7 +80,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 // 5) Вывод корзины #
 // 6) Перемещение файла
 // 7) Перемещение диреткории
-// 8) Копирование файла
+// 8) Копирование файла #
 // 9) Копирование директории
 // 10) Недавние файлы
 // 11) Ссылка на файл
