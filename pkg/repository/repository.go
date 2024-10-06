@@ -42,8 +42,7 @@ type Trash interface {
 
 type Recent interface {
 	GetRecent(uidUser string) ([]files.File, error)
-	UpdateRecent(uidUser string) error
-	SetRecent(uidUser, uidFile string) error
+	UpdateRecent(uidUser, uidFile string) error
 }
 
 type Repository struct {

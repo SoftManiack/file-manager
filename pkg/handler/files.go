@@ -31,9 +31,17 @@ func (h *Handler) UpdateFile(c *gin.Context) {
 
 	file, err := h.services.UpdateFile(input)
 
+	fmt.Println(file)
+
+	fmt.Println(userUid)
+	fmt.Println(file.Uid)
+	fmt.Println(err)
+
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
+	} else {
+		_ = h.services.UpdateRecent(userUid, file.Uid)
 	}
 
 	if userUid == input.RootUid {

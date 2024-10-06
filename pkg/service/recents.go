@@ -3,6 +3,7 @@ package service
 import (
 	files "file-manager/dto"
 	"file-manager/pkg/repository"
+	"fmt"
 )
 
 type RecentService struct {
@@ -26,9 +27,13 @@ func (s *RecentService) GetRecent(uidUser string) ([]files.File, error) {
 	return files, nil
 }
 
-func (s *RecentService) UpdateRecent(uidUser string) error {
+func (s *RecentService) UpdateRecent(uidUser, uidFile string) error {
 
-	err := s.repo.UpdateRecent(uidUser)
+	fmt.Println("recet services 12112")
+	fmt.Println(uidUser)
+	fmt.Println(uidFile)
+
+	err := s.repo.UpdateRecent(uidUser, uidFile)
 
 	if err != nil {
 		return err
