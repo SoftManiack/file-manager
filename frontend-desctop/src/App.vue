@@ -1,9 +1,10 @@
 <script setup lang="ts">
-  import '@/app/styles/index.scss';
-  import { RouterView } from 'vue-router';
+  import '@/assets/styles/index.scss';
+  import { RouterView } from 'vue-router'
   import { useRoute } from 'vue-router'
   import { computed } from 'vue'
-  import { MainLayout, EmptyLayout } from '@/shared/ui/layouts'
+  import MainLayout from '../src/layout/MainLayout.vue'
+  import EmptyLayout from '../src/layout/EmptyLayout.vue'
   
   const route = useRoute()
   const isEmptyLayout = computed(() => route.meta.layout === 'empty')
@@ -15,4 +16,4 @@
       <EmptyLayout v-if="isEmptyLayout" />
       <MainLayout v-else />
   </div>
-</template>
+</template>  

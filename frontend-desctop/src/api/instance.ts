@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios'
 import { type AxiosInstance } from 'axios'
 
 const instance: AxiosInstance = axios.create({
@@ -13,7 +13,7 @@ const instance: AxiosInstance = axios.create({
 instance.interceptors.request.use((config) => {
   
   if (localStorage.getItem("token")) {
-    config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
+    config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`
   }
   return config;  
 });

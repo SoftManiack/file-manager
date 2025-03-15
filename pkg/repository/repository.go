@@ -18,6 +18,7 @@ type Directories interface {
 	GetDirectory(uidDir string) ([]directories.Directories, []files.File, error)
 	CreateDirectory(userUid string, input directories.NewDirectory) (directories.Directories, error)
 	UpdateDirectory(input directories.UpdateDirectory) (directories.Directories, error)
+	DownloadDirectory(uidDir string) (directories.DirectoriesTree, error)
 	CopyDirectory(uidDir, uidTargetRoot string) error
 	MoveDirectory(uidDir, uidTargetRoot string) error
 }

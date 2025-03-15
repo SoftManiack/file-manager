@@ -1,6 +1,6 @@
 //@forward 'breakpoint';
-@import 'fonts';
-@import 'variables';
-@import 'mixins';
-@import 'colors';
-@import 'base'; 
+@use 'fonts';
+@use 'variables';
+@use 'mixins';
+@use 'colors';
+@use 'base'; 

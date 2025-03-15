@@ -6,6 +6,7 @@
     
     const props = defineProps<Props>();
     const { type } = props;
+
 </script>
 
 <template>

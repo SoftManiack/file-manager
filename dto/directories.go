@@ -42,5 +42,5 @@ type Directories struct {
 type DirectoriesTree struct {
 	DirectoriesTree []DirectoriesTree
 	Directories     []Directories
-	File            []File
+	Files           []File
 }

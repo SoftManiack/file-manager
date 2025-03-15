@@ -22,7 +22,6 @@
     const updateValue = (e) => {
         emit('update:modelValue', e.target.value)
     }
-
 </script>
 
 <template>
@@ -77,7 +76,7 @@
                 margin-top: 4px !important;
                 width: 100%;
                 font-size: 1rem;
-                padding: 0.6rem;
+                padding: 0.7rem;
                 padding-left: 1rem;
                 border: 1px solid var(--br-color-input);
                 border-radius: 4px;

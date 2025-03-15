@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/entities/Auth/model/stores'
+import { useAuthStore } from '../store/auth.sore'
 
 import type { NavigationGuard } from 'vue-router';
 

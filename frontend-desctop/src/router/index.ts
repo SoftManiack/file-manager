@@ -1,6 +1,6 @@
 import { createMemoryHistory, createRouter } from 'vue-router'
 
-import Login from '@/pages/Login'
+import Login from '../pages/Login.vue'
 import { authGuard } from '@/router/authGuard'
 
 //import Login from '@/pages/Login.vue'
@@ -17,7 +17,7 @@ const router = createRouter({
 
 // сделал асинхронным хз )
 
-router.beforeEach( async (to, from, next):Promise<void>  => {
+router.beforeEach( async (to, from, next):Promise<void> => {
   // ...
   // explicitly return false to cancel the navigation
 
@@ -28,6 +28,5 @@ router.beforeEach( async (to, from, next):Promise<void>  => {
   }
 
 })
-
 
 export default router

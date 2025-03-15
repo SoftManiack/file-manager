@@ -5,11 +5,11 @@
     import { useVuelidate } from '@vuelidate/core'
     import { required } from '@vuelidate/validators'
 
-    import { useAuthStore } from '@/entities/Auth/model/stores'
+    import { useAuthStore } from '../store/auth.sore'
     
-    import Input from '@/components/shared/Input'
-    import Button from '@/components/shared/Button'
-    import Typography from '@/components/shared/Typography'
+    import Input from '../components/shared/Input.vue'
+    import Button from '../components/shared/Button.vue'
+    import Typography from '../components/shared/Typography.vue'
     
     const auth = useAuthStore() 
     const { getAuthError } = storeToRefs(auth)
@@ -22,9 +22,9 @@
             required: required
         }
     }))
-
+    
     const v = useVuelidate(validation, { email })
-
+    
     const eventForButton = () => {
 
         auth.login( {
@@ -32,7 +32,6 @@
             password: password.value
         })
     }
-
 </script>
 
 <template>
@@ -75,10 +74,11 @@
     .login-from{
         margin: auto;
         width: 500px;
-        margin-top: 20rem;
+        margin-top: 16rem;
         background-color: var(--bg-color-form);
         box-shadow: var(--shadow-default-xs);
         border-radius: 4px;
+        padding-bottom: 3rem;
         &__error{
 
         }

@@ -19,7 +19,6 @@
     const clickOnButton = () => {
         emit('click')
     }
-
 </script>
 
 <template>

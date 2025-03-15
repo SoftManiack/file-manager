@@ -5,6 +5,5 @@
 <template>
     <div>
         <RouterView /> 
-        121
     </div>
 </template>

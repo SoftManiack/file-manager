@@ -98,6 +98,46 @@ func (r *DirectoriesPostgres) CreateDirectory(userUid string, input dto.NewDirec
 	return newDirectory, tx.Commit()
 }
 
+func (r *DirectoriesPostgres) DownloadDirectory(uidDir string) (directories.DirectoriesTree, error) {
+
+	var tree directories.DirectoriesTree
+
+	// получить файлы
+	// получить директории
+
+	queryGetFiles := fmt.Sprintf("SELECT * FROM %s WHERE root_uid = $2", filesTable)
+	queryGetDirectories := fmt.Sprintf("SELECT * FROM %s WHERE root_uid = $2", directoriesTable)
+
+	err := r.db.Select(&tree.Files, queryGetFiles, uidDir)
+
+	if err != nil {
+		return directories.DirectoriesTree{}, err
+	}
+
+	err = r.db.Select(&tree.Directories, queryGetDirectories, uidDir)
+
+	if err != nil {
+		return directories.DirectoriesTree{}, err
+	}
+
+	for _, item := range tree.Directories {
+
+		treeChild, err := r.getTree(item.Uid)
+
+		if err != nil {
+			return tree, nil
+		}
+
+		if len(treeChild.Directories) > 0 || len(treeChild.Files) > 0 {
+			tree.DirectoriesTree = append(tree.DirectoriesTree, treeChild)
+		}
+	}
+
+	// поиск диреткорий где чето лежит
+
+	return tree, nil
+}
+
 func (r *DirectoriesPostgres) UpdateDirectory(input directories.UpdateDirectory) (directories.Directories, error) {
 
 	var directory dto.Directories
@@ -149,9 +189,6 @@ func (r *DirectoriesPostgres) MoveDirectory(uidDir, uidTargetRoot string) error 
 
 func (r *DirectoriesPostgres) getPath(uidDir, name string) (string, error) {
 
-	fmt.Println(uidDir)
-	fmt.Println(name)
-
 	var path string
 	var rootDirectory dto.Directories
 
@@ -162,11 +199,42 @@ func (r *DirectoriesPostgres) getPath(uidDir, name string) (string, error) {
 		return "", err
 	}
 
-	fmt.Println("rootDirectory")
-	fmt.Println(rootDirectory)
 	path = rootDirectory.Path + "/" + name
 
 	fmt.Println(path)
 
 	return path, nil
+}
+
+func (r *DirectoriesPostgres) getTree(uidDir string) (directories.DirectoriesTree, error) {
+
+	var tree directories.DirectoriesTree
+
+	queryGetFiles := fmt.Sprintf("SELECT * FROM %s WHERE root_uid = $2", filesTable)
+	queryGetDirectories := fmt.Sprintf("SELECT * FROM %s WHERE root_uid = $2", directoriesTable)
+
+	err := r.db.Select(&tree.Files, queryGetFiles, uidDir)
+
+	if err != nil {
+		return directories.DirectoriesTree{}, err
+	}
+
+	err = r.db.Select(&tree.Directories, queryGetDirectories, uidDir)
+
+	if err != nil {
+		return directories.DirectoriesTree{}, err
+	}
+
+	for _, item := range tree.Directories {
+
+		treeChild, _ := r.getTree(item.Uid)
+
+		if len(treeChild.Directories) > 0 || len(treeChild.Files) > 0 {
+			tree.DirectoriesTree = append(tree.DirectoriesTree, treeChild)
+		}
+	}
+
+	// поиск диреткорий где чето лежит
+
+	return tree, nil
 }

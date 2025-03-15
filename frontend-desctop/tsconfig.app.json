@@ -1,14 +1,28 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+  "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {  
+      "@/*": ["src/*"]
+    }
+  }
+} 
 
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
-  },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
-}
+/*
+  extends: Это поле указывает, что текущий файл конфигурации расширяет настройки из файла tsconfig.json, который находится на уровень выше в директории. Это позволяет наследовать общие настройки проекта и добавлять или переопределять специфичные настройки для приложения.
+
+  compilerOptions.outDir: Определяет каталог, куда будут сохранены скомпилированные JavaScript-файлы. В данном случае это корневой каталог dist.
+
+  compilerOptions.composite: Включает поддержку композиции проектов, что позволяет TypeScript работать с несколькими проектами одновременно и улучшает производительность.
+
+  compilerOptions.baseUrl: Указывает базовый каталог для разрешения путей. В данном случае это текущий каталог (.).
+
+  compilerOptions.paths: Определяет псевдонимы для путей. В этом примере @/* соответствует src/*, что позволяет использовать более короткие импорты в коде.
+
+  include: Список файлов или шаблонов, которые должны быть включены в компиляцию. Включает все .ts и .vue файлы в директории src.
+
+  exclude: Список файлов или шаблонов, которые должны быть исключены из компиляции. Исключает каталог node_modules и каталог dist, чтобы не компилировать зависимости и уже скомпилированные файлы.
+*/
