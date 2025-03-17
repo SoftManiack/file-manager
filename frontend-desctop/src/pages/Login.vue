@@ -16,10 +16,10 @@
 
     const email = ref('')
     const password = ref('')
-    
+     
     const validation = computed(() => ({
         login: {
-            required: required
+            required: required  
         }
     }))
     
