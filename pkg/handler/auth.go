@@ -16,13 +16,12 @@ type signInInput struct {
 func (h *Handler) SignUp(c *gin.Context) {
 	var input user.User
 
-	fmt.Println(input.Name)
 	if err := c.BindJSON(&input); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
+
+		newErrorResponse(c, http.StatusBadRequest, "не верный пароль или почта")
 		return
 	}
 
-	fmt.Println(input)
 	uid, err := h.services.Authorization.CreateUser(input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -43,11 +42,10 @@ func (h *Handler) SignIn(c *gin.Context) {
 	var input signInInput
 
 	if err := c.BindJSON(&input); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
+
+		newErrorResponse(c, http.StatusBadRequest, "не верный пароль или почта")
 		return
 	}
-
-	fmt.Println(input)
 
 	token, err := h.services.Authorization.GenerateToken(input.Email, input.Password)
 
