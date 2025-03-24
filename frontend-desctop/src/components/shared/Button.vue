@@ -9,7 +9,7 @@
         icon?: string,
         color?: string
         isDisabled?: boolean
-        error?: string
+        error?: boolean
     }
     
     const props = defineProps<IButton>();
@@ -23,6 +23,7 @@
 
 <template>
     <button 
+        :disabled="error"
         :class="['btn', `btn__${size}`, `btn__${color}`]"
         @click="clickOnButton"
     > 
@@ -59,6 +60,9 @@
         padding: 8px;
         padding-left: 15px;
         padding-right: 15px;
+    }
+    .btn__error{
+       
     }
     
 </style>

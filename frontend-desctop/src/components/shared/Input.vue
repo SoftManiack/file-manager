@@ -38,7 +38,7 @@
                 <slot name="leftIcon"></slot>
             </span>
             <input
-               :class="{'input--is-left-slot': slots.leftIcon}"
+               :class="{'input--is-left-slot': slots.leftIcon, 'input--error': error }"
                 ref="input"
                 :value="modelValue"
                 :placeholder="placeholder"
@@ -93,9 +93,12 @@
             .input--is-left-slot{
                 padding-left: 1.8rem;
             }
-        }
-        &__error{
-
+            .input--error{
+                border-color: var(--br-color-error-input)
+            }
+            .input--error:hover{
+                border-color: var(--br-color-error-input)
+            }
         }
     }
 </style>

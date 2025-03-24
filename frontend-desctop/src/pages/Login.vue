@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-    import { ref, computed }  from 'vue'
+    import { ref, computed, reactive  }  from 'vue'
     import { storeToRefs } from 'pinia'
     import { useVuelidate } from '@vuelidate/core'
     import { required } from '@vuelidate/validators'
@@ -14,24 +14,32 @@
     const auth = useAuthStore() 
     const { getAuthError } = storeToRefs(auth)
 
+    const state = reactive({
+        email: null,
+        password: null
+    })
+
+    const requiredNameLength = ref(2)
+
     const email = ref('')
     const password = ref('')
      
     const validation = computed(() => ({
-        login: {
-            required: required  
+        email: {
+            required,
         }
     }))
     
-    const v = useVuelidate(validation, { email })
+    const v = useVuelidate(validation, state)
     
     const eventForButton = () => {
 
         auth.login( {
-            email: email.value,
-            password: password.value
+            email: state.email.value,
+            password: state.password.value
         })
     }
+    
 </script>
 
 <template>
@@ -40,24 +48,26 @@
         <Typography :tagName="'h4'"> 
             Вход
         </Typography>
+        {{v.email.$invalid}}
         <Input 
             class="mt-4"
-            v-model:modelValue="email"
+            v-model:modelValue="state.email"
             label="Логин"
             name="name"
             placeholder="Введите логин"
-   
+               :error="v.email.$invalid"
+
         />
         <Input 
             class="mt-4"
-            v-model:modelValue="password"
+            v-model:modelValue="state.password"
             label="Пароль"
             name="password"
             placeholder="Введите пароль"
         />
-        <span class="login-from__error">
-            {{ getAuthError }}
-        </span>
+        <div class="login-from__error">
+            {{ getAuthError.error }}
+        </div>  
         <Button 
             class="mt-4"
             label="Войти"
@@ -66,6 +76,7 @@
             type="button"
             size="m"
             @click="eventForButton"
+            :error="v.email.$invalid"
         />
     </form>
 </template>
@@ -80,7 +91,7 @@
         border-radius: 4px;
         padding-bottom: 3rem;
         &__error{
-
+            margin-top: 2rem !important;
         }
     }
 </style>
