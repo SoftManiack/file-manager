@@ -41,6 +41,7 @@
                :class="{'input--is-left-slot': slots.leftIcon, 'input--error': error }"
                 ref="input"
                 :value="modelValue"
+                :type="inputType"
                 :placeholder="placeholder"
                 @input="updateValue"
             >
@@ -48,13 +49,11 @@
                 <slot name="rightIcon"></slot>
             </span>
         </div>
-
-            <small
-                class="input__error"
-            >
-                {{ error }}
-            </small>
-
+        <small
+            class="input__error"
+        >
+            {{ error }}
+        </small>
     </div>
 </template>
 
@@ -91,13 +90,15 @@
                 border-color: var(--br-color-input-focus);
             }
             .input--is-left-slot{
-                padding-left: 1.8rem;
+                padding-left: 1.8rem;   
             }
             .input--error{
-                border-color: var(--br-color-error-input)
+                border-color: var(--br-color-error-input) !important;
+                color: var(--br-color-error-input) !important
             }
             .input--error:hover{
-                border-color: var(--br-color-error-input)
+                border-color: var(--br-color-error-input) !important;
+                color: var(--br-color-error-input) !important
             }
         }
     }

@@ -19,17 +19,18 @@
         password: null
     })
 
-    const requiredNameLength = ref(2)
-
     const email = ref('')
     const password = ref('')
      
     const validation = computed(() => ({
         email: {
             required,
+        },
+        password: {
+            required,
         }
     }))
-    
+
     const v = useVuelidate(validation, state)
     
     const eventForButton = () => {
@@ -37,7 +38,7 @@
         auth.login( {
             email: state.email.value,
             password: state.password.value
-        })
+        })  
     }
     
 </script>
@@ -55,7 +56,7 @@
             label="Логин"
             name="name"
             placeholder="Введите логин"
-               :error="v.email.$invalid"
+            :error="v.email.$invalid && 'Поле недолжно быть пустым'"
 
         />
         <Input 
@@ -64,6 +65,8 @@
             label="Пароль"
             name="password"
             placeholder="Введите пароль"
+            :inputType="{ type: 'password' }"
+            :error="v.password.$invalid && 'Поле недолжно быть пустым'"
         />
         <div class="login-from__error">
             {{ getAuthError.error }}
