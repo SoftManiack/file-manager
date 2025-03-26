@@ -1,13 +1,15 @@
 import { createMemoryHistory, createRouter } from 'vue-router'
 
 import Login from '../pages/Login.vue'
+import Main from '../pages/Main.vue'
+
 import { authGuard } from '@/router/authGuard'
 
 //import Login from '@/pages/Login.vue'
 
 const routes = [
   { path: '/login', component: Login,  name: 'login', meta: { requiresAuth: false, layout: "empty" } },
-  { path: '/', name: 'main',  component: Login, meta: { requiresAuth: true, layout: "main" }}
+  { path: '/', component: Main, name: 'main',  meta: { requiresAuth: false, layout: "empty" }  }
 ]
 
 const router = createRouter({

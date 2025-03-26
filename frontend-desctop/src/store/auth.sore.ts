@@ -17,6 +17,7 @@ actions: {
         authApi.login(login)
             .then((data) => {
                 this.user = data.data
+                this.error = null
                 console.log(this.user)
             })
             .catch((err) => {

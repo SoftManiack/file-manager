@@ -13,6 +13,7 @@
 
 <template>
   <div id="app" >
+    {{isEmptyLayout}}
       <EmptyLayout v-if="isEmptyLayout" />
       <MainLayout v-else />
   </div>

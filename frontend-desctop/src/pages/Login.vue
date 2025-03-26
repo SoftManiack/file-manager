@@ -4,6 +4,7 @@
     import { storeToRefs } from 'pinia'
     import { useVuelidate } from '@vuelidate/core'
     import { required } from '@vuelidate/validators'
+    import { useRouter } from 'vue-router';
 
     import { useAuthStore } from '../store/auth.sore'
     
@@ -13,6 +14,8 @@
     
     const auth = useAuthStore() 
     const { getAuthError } = storeToRefs(auth)
+
+    const router = useRouter();
 
     const state = reactive({
         email: null,
@@ -39,6 +42,10 @@
             email: state.email.value,
             password: state.password.value
         })  
+
+        if(!getAuthError){
+            router.push({ name: 'main' });
+        }
     }
     
 </script>
@@ -49,7 +56,6 @@
         <Typography :tagName="'h4'"> 
             Вход
         </Typography>
-        {{v.email.$invalid}}
         <Input 
             class="mt-4"
             v-model:modelValue="state.email"
@@ -68,7 +74,7 @@
             :inputType="{ type: 'password' }"
             :error="v.password.$invalid && 'Поле недолжно быть пустым'"
         />
-        <div class="login-from__error">
+        <div class="login-from__error mt-2">
             {{ getAuthError.error }}
         </div>  
         <Button 
@@ -94,7 +100,7 @@
         border-radius: 4px;
         padding-bottom: 3rem;
         &__error{
-            margin-top: 2rem !important;
+            color: var(--text-color-error-input) !important;
         }
     }
 </style>

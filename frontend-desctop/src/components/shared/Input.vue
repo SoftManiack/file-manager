@@ -49,11 +49,12 @@
                 <slot name="rightIcon"></slot>
             </span>
         </div>
-        <small
-            class="input__error"
+        <div
+            class="input__error mt-1"
+            v-if="error"
         >
             {{ error }}
-        </small>
+        </div>
     </div>
 </template>
 
@@ -100,6 +101,10 @@
                 border-color: var(--br-color-error-input) !important;
                 color: var(--br-color-error-input) !important
             }
+        }
+        &__error{
+            color: var(--text-color-error-input) !important;
+            font-size: 0.9rem;
         }
     }
 </style>
