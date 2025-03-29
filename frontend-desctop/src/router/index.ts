@@ -17,8 +17,6 @@ const router = createRouter({
   routes,
 })
 
-// сделал асинхронным хз )
-
 router.beforeEach(async (to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     try {
