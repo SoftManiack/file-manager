@@ -7,7 +7,7 @@
         <header>
 
         </header>
-        Main1
+       Trash
     </div>
 </template>
 

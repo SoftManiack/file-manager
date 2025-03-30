@@ -18,7 +18,7 @@ func (h *Handler) SignUp(c *gin.Context) {
 
 	if err := c.BindJSON(&input); err != nil {
 
-		newErrorResponse(c, http.StatusBadRequest, "не верный пароль или почта")
+		newErrorResponse(c, http.StatusBadRequest, "Не верный пароль или почта")
 		return
 	}
 
@@ -43,13 +43,13 @@ func (h *Handler) SignIn(c *gin.Context) {
 
 	if err := c.BindJSON(&input); err != nil {
 
-		newErrorResponse(c, http.StatusBadRequest, "не верный пароль или почта")
+		newErrorResponse(c, http.StatusBadRequest, "Не верный пароль или почта")
 		return
 	}
 
 	token, err := h.services.Authorization.GenerateToken(input.Email, input.Password)
 
-	if err != nil && err.Error() == "неверная электронная почта или пароль" {
+	if err != nil && err.Error() == "Неверная электронная почта или пароль" {
 		newErrorResponse(c, 400, err.Error())
 		return
 	} else if err != nil {

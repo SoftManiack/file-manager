@@ -1,22 +1,37 @@
-<script lang="ts">
+<script lang="ts" setup>
     import { RouterView } from 'vue-router';
     import Typography from '../components/shared/Typography.vue'
+    import Icon from '../components/shared/Icon.vue'    
 </script>   
 
 <template>
     <div class="maim-layout">
         <nav class="nav">
             <div class="nav__container px-3">
-            <Typography :tagName="'h1'"> 
-                Вход
-            </Typography>
+                <Typography 
+                    :tagName="'h5'"
+                    :color="'base'"
+                > 
+                    Вход
+                </Typography>
+                <Icon 
+                    :type="'search'"
+                />
+                <Icon 
+                    :type="'cloud'"
+                />
+                <Icon 
+                    :type="'open-folder-silver'"
+                />
+                <Icon 
+                    :type="'folder-silver'"
+                />
             </div>
             <footer class="footer px-2">
-                <Typography  :tagName="'h3'"> 
+                <Typography  :tagName="'h5'"> 
                     Объем
                 </Typography>
                 <div class="size-bar"></div>
-                
             </footer>
         </nav>
         <main>
@@ -30,7 +45,7 @@
 
     .maim-layout{
         display: flex;
-        height: 100%;
+        height: 100%;   
         .nav{
             display: flex;
             flex-direction: column;
@@ -43,6 +58,10 @@
                 border-top: 2px solid #fafafa;
                 height: 7vh;
             }
+        }
+        main{
+            height: 100% !important;
+            width: 100%;
         }
     }
 

@@ -4,14 +4,18 @@
     interface Props {
         tagName?: 'p' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5',
         bold?: boolean,
-        size?: 'xs' |  's' | 'm' | 'l' | 'xl'
+        size?: 'xs' |  's' | 'm' | 'l' | 'xl',
+        color?: 'base'
     }
     
     const props = defineProps<Props>();
 </script>
     
 <template>
-    <component :is="props.tagName" :class="[ 'typography', size ? `${size}` : '', bold ? 'bold' : '', `tag_${tagName}`]">
+    <component 
+        :is="props.tagName" 
+        :class="[ 'typography', size ? `${size}` : '', bold ? 'bold' : '', `tag_${tagName}`, `color-${color}`]"
+    >
         <slot></slot>
     </component>
 </template>
@@ -33,6 +37,8 @@
     .tag_h3 { font-size: 36px; }
     .tag_h4 { font-size: 24px; }
     .tag_h5 { font-size: 18px; }
+
+    .color-base{ color: #333333; }
 
     @media screen and (max-width: 768px){
         .xs{ font-size: 8px; }
