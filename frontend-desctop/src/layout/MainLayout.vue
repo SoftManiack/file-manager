@@ -15,17 +15,16 @@
                     Вход
                 </Typography>
                 <Icon 
-                    :type="'search'"
-                />
-                <Icon 
                     :type="'cloud'"
                 />
-                <Icon 
-                    :type="'open-folder-silver'"
-                />
-                <Icon 
-                    :type="'folder-silver'"
-                />
+                <div class="link">
+                    <Icon :type="'recent'" />
+                    <router-link to="/"> Недавние </router-link>
+                </div>
+                <div class="link">
+                    <Icon :type="'trash'" />
+                    <router-link to="/"> Недавние </router-link>
+                </div>
             </div>
             <footer class="footer px-2">
                 <Typography  :tagName="'h5'"> 
@@ -53,6 +52,22 @@
             background-color: var(--nav-bg-color);
             &__container{ 
                 height: 100%;
+                .link{
+                    align-items: center;
+                    cursor: pointer;
+                    display: flex;
+                    padding: 4px;
+                    a{
+                        margin-left: 1rem;
+                        text-decoration: none;
+                        color: var(--text-link-color-nav);
+                    }
+                }
+                .link:hover{
+                    transition: 1s all;
+                    background-color: #fff;
+                    color: var(--text-link-color-nav-active);
+                }
             }
             .footer{
                 border-top: 2px solid #fafafa;
